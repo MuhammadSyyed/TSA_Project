@@ -3,6 +3,17 @@ from enum import Enum
 from datetime import date
 
 
+class SessionCreate(BaseModel):
+    user_id: int
+    username: str
+    created_at: float
+    valid_before: float
+
+
+class Session(SessionCreate):
+    session_id: int
+
+
 class UserRole(str, Enum):
     admin = "admin"
     coo = "coo"
@@ -36,13 +47,17 @@ class UserLogin(BaseModel):
 
 
 class StudentBase(BaseModel):
-    CAMPUS_ID: int
-    NAME: str
-    ROLL_NO: str
-    BATCH: str
-    DATE_JOINED: date  # Assuming you want to use datetime.date for date values
-    IMAGE: bytes
+    campus_id: int
+    name: str
+    roll_no: str
+    batch: str
+    date_joined: date
+    image: bytes
 
 
 class Student(StudentBase):
+    student_id: int
+
+
+class UpdateStudent(StudentBase):
     STUDENT_ID: int

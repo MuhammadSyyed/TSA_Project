@@ -76,3 +76,11 @@ campus_schema = '''
         HEAD_EB TEXT NOT NULL,
         CONTACT_NUMBER TEXT NOT NULL)
 '''
+sessions_schema = '''
+        CREATE TABLE IF NOT EXISTS SESSIONS (
+        SESSION_ID INTEGER PRIMARY KEY,
+        USER_ID INTEGER NOT NULL,
+        USERNAME TEXT NOT NULL,
+        CREATED_AT REAL NOT NULL,
+        VALID_BEFORE REAL NOT NULL)
+'''

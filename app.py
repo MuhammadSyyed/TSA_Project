@@ -1,9 +1,10 @@
 from fastapi import FastAPI, HTTPException, Depends, Request, status
-from db_utils import get_user, add_user, log
+from db_utils import expire_session_for_user, get_user, add_user, get_user_by_session_id, log, add_session, valid_session
 import models as model
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 import configs as config
 import random
+from datetime import datetime, timedelta
 
 app = FastAPI()
 
@@ -19,35 +20,26 @@ def authenticate_user(user_data: model.UserLogin):
     return user
 
 
-def get_user_from_session_id(request: Request):
-    return config.sessions.get(int(request.cookies.get("session_id")))
-
-
 def verify_through_session_id(request: Request):
     try:
         session_id = int(request.cookies.get("session_id"))
-        print(session_id)
-        if session_id not in config.sessions:
+        if not valid_session(session_id):
             raise HTTPException(
                 status_code=401,
                 detail="Invalid session ID",
             )
-        user = get_user_from_session_id(request)
+        print(f"Getting user for {session_id}")
+        user = get_user_by_session_id(session_id)
         return user
     except Exception as e:
         return None
 
 
-def create_session(user_id: int):
-    session_id = len(config.sessions) + random.randint(0, 1000000)
-    config.sessions[session_id] = user_id
-    return session_id
-
-
-def get_session_id(request: Request):
-    session_id = int(request.cookies.get("session_id"))
-    if session_id is None or session_id not in config.sessions:
-        raise HTTPException(status_code=401, detail="Invalid session ID")
+def create_session(user: model.User):
+    log("out", (user.id, user.username))
+    session_id = random.randint(0, 1000000)
+    session_id = add_session(model.Session(session_id=session_id, user_id=user.id, username=user.username,
+                             created_at=datetime.now().timestamp(), valid_before=datetime.now().timestamp()+3600))
     return session_id
 
 
@@ -57,13 +49,13 @@ def index():
 
 
 @app.get("/me")
-def read_current_user(user: model.User = Depends(get_user_from_session_id)):
+def read_current_user(user: model.User = Depends(verify_through_session_id)):
     return user
 
 
 @app.post("/login", response_model=dict)
 def login(user: model.User = Depends(authenticate_user)):
-    session_id = create_session(user.id)
+    session_id = create_session(user)
     return {"message": "Logged in successfully", "session_id": session_id}
 
 
@@ -84,9 +76,8 @@ def check(verified=Depends(verify_through_session_id)):
 
 
 @app.post("/logout")
-def logout(session_id: int = Depends(get_session_id)):
-    if session_id not in config.sessions:
+def logout(verified=Depends(verify_through_session_id)):
+    if not verified:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
-    config.sessions.pop(session_id)
-    return {"message": "Logged out successfully"}
+    return expire_session_for_user(verified)
