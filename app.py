@@ -1,10 +1,13 @@
 from fastapi import FastAPI, HTTPException, Depends, Request, status
+from fastapi.templating import Jinja2Templates
 from db_utils import expire_session_for_user, get_user, add_user, get_user_by_session_id, log, add_session, valid_session
 import models as model
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 import configs as config
 import random
 from datetime import datetime, timedelta
+
+templates = Jinja2Templates(directory="templates")
 
 app = FastAPI()
 
@@ -45,7 +48,8 @@ def create_session(user: model.User):
 
 @app.get('/')
 def index():
-    return {"message": "Server is running"}
+    context = {"name":"Imran"}
+    return templates.TemplateResponse("index.html",context=context)
 
 
 @app.get("/me")
