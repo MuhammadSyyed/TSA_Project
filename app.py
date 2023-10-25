@@ -47,8 +47,8 @@ def create_session(user: model.User):
 
 
 @app.get('/')
-def index():
-    context = {"name":"Imran"}
+def index(request: Request):
+    context = {"request":request,"name":"Imran"}
     return templates.TemplateResponse("index.html",context=context)
 
 
