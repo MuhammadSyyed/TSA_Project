@@ -1,9 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Welcome {{name}}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
 </head>
-<body>
-    <h1>Hello, {{ name }}!</h1>
+
+<body id="login-body">
+    <div id="login-container">
+        <center>
+            <h2>Login</h2>
+
+            <form action="/login" method="post">
+                <input type="text" id="username" name="username" placeholder="Enter username" required>
+                <input type="password" id="password" name="password" placeholder="Enter Password" required>
+                <br />
+                <button type="submit" id="login-button">Login</button>
+        </center>
+        </form>
+    </div>
 </body>
+
 </html>

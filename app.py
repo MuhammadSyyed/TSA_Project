@@ -1,8 +1,9 @@
-from fastapi import FastAPI, HTTPException, Depends, Request, status
+from fastapi import FastAPI, HTTPException, Depends, Request, status, Form
 from fastapi.templating import Jinja2Templates
 from db_utils import expire_session_for_user, get_user, add_user, get_user_by_session_id, log, add_session, valid_session
 import models as model
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi.staticfiles import StaticFiles
 import configs as config
 import random
 from datetime import datetime, timedelta
@@ -10,9 +11,11 @@ from datetime import datetime, timedelta
 templates = Jinja2Templates(directory="templates")
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
-def authenticate_user(user_data: model.UserLogin):
+def authenticate_user(username: str = Form(...), password: str = Form(...)):
+    user_data = model.UserLogin(**{"username": username, "password": password})
     user = get_user(user_data)
     if not user:
         raise HTTPException(
@@ -39,7 +42,7 @@ def verify_through_session_id(request: Request):
 
 
 def create_session(user: model.User):
-    log("out", (user.id, user.username))
+    log("Session Created", (user.id, user.username))
     session_id = random.randint(0, 1000000)
     session_id = add_session(model.Session(session_id=session_id, user_id=user.id, username=user.username,
                              created_at=datetime.now().timestamp(), valid_before=datetime.now().timestamp()+3600))
@@ -48,8 +51,8 @@ def create_session(user: model.User):
 
 @app.get('/')
 def index(request: Request):
-    context = {"request":request,"name":"Imran"}
-    return templates.TemplateResponse("index.html",context=context)
+    context = {"request": request, "name": "Imran"}
+    return templates.TemplateResponse("index.html", context=context)
 
 
 @app.get("/me")
@@ -58,9 +61,9 @@ def read_current_user(user: model.User = Depends(verify_through_session_id)):
 
 
 @app.post("/login", response_model=dict)
-def login(user: model.User = Depends(authenticate_user)):
+def login(request: Request, user: model.User = Depends(authenticate_user)):
     session_id = create_session(user)
-    return {"message": "Logged in successfully", "session_id": session_id}
+    return templates.TemplateResponse("layout.html", {"request": request, "variable": session_id,"user":user})
 
 
 @app.post("/signup", response_model=dict)
