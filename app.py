@@ -7,12 +7,11 @@ from fastapi.staticfiles import StaticFiles
 import configs as config
 import random
 from datetime import datetime, timedelta
-
+from pathlib import Path
 templates = Jinja2Templates(directory="templates")
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
-
 
 def authenticate_user(username: str = Form(...), password: str = Form(...)):
     user_data = model.UserLogin(**{"username": username, "password": password})
@@ -51,7 +50,7 @@ def create_session(user: model.User):
 
 @app.get('/')
 def index(request: Request):
-    context = {"request": request, "name": "Imran"}
+    context = {"request": request}
     return templates.TemplateResponse("index.html", context=context)
 
 
@@ -63,7 +62,7 @@ def read_current_user(user: model.User = Depends(verify_through_session_id)):
 @app.post("/login", response_model=dict)
 def login(request: Request, user: model.User = Depends(authenticate_user)):
     session_id = create_session(user)
-    return templates.TemplateResponse("layout.html", {"request": request, "variable": session_id,"user":user})
+    return templates.TemplateResponse("home.html", {"request": request})
 
 
 @app.post("/signup", response_model=dict)
