@@ -13,6 +13,7 @@ templates = Jinja2Templates(directory="templates")
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
+
 def authenticate_user(username: str = Form(...), password: str = Form(...)):
     user_data = model.UserLogin(**{"username": username, "password": password})
     user = get_user(user_data)
@@ -51,7 +52,7 @@ def create_session(user: model.User):
 @app.get('/')
 def index(request: Request):
     context = {"request": request}
-    return templates.TemplateResponse("index.html", context=context)
+    return templates.TemplateResponse("login.html", context=context)
 
 
 @app.get("/me")
@@ -62,7 +63,8 @@ def read_current_user(user: model.User = Depends(verify_through_session_id)):
 @app.post("/login", response_model=dict)
 def login(request: Request, user: model.User = Depends(authenticate_user)):
     session_id = create_session(user)
-    return templates.TemplateResponse("home.html", {"request": request})
+    context = {"request": request,"session_id":session_id}
+    return templates.TemplateResponse("dashboard.html",context=context)
 
 
 @app.post("/signup", response_model=dict)
@@ -87,3 +89,19 @@ def logout(verified=Depends(verify_through_session_id)):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
     return expire_session_for_user(verified)
+
+@app.get("/users")
+def users(request:Request,verified=Depends(verify_through_session_id)):
+    if not verified:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Not authenticated")
+    context = {"request":request,"session_id" :int(request.cookies.get("session_id"))}
+    return templates.TemplateResponse('users.html',context=context)
+
+@app.get("/dashboard")
+def dashboard(request:Request,verified=Depends(verify_through_session_id)):
+    if not verified:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Not authenticated")
+    context = {"request": request,"session_id":int(request.cookies.get("session_id"))}
+    return templates.TemplateResponse('dashboard.html',context=context)

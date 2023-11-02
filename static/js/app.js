@@ -17,6 +17,17 @@ function closeSidebar() {
     }
 }
 
+function gotoUsers(session_id) {
+    console.log(session_id)
+    document.cookie = `session_id=${session_id};`;
+    window.location.href = "/users";
+}
+
+function gotoDashboard(session_id) {
+    console.log(session_id)
+    document.cookie = `session_id=${session_id};`;
+    window.location.href = "/dashboard";
+}
 // ---------- CHARTS ----------
 
 // BAR CHART
