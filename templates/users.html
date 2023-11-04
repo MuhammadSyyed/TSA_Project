@@ -3,8 +3,8 @@
 {% block main_title%}<p class="font-weight-bold">USERS</p>{% endblock %}
 
 {% block sidebarlist %}
- <li class="sidebar-list-item">
-    <a onclick="gotoDashboard('{{session_id}}')">
+<li class="sidebar-list-item" onclick="gotoDashboard('{{session_id}}')">
+    <a>
         <span class="material-icons-outlined">dashboard</span> Dashboard
     </a>
 </li>
@@ -34,8 +34,8 @@
         <span class="material-icons-outlined">poll</span> Reports
     </a>
 </li> -->
-<li class="sidebar-list-item">
-    <a onclick="gotoUsers('{{session_id}}')">
+<li class="sidebar-list-item" onclick="gotoUsers('{{session_id}}')">
+    <a>
         <span class="material-icons-outlined">face</span> Users
     </a>
 </li>

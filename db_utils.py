@@ -77,9 +77,9 @@ def expire_session_for_user(user: User):
                        (datetime.now().timestamp(), user.id))
         conn.commit()
         conn.close()
-        return {"message": "Logged out successfully"}
+        return True
     except sqlite3.IntegrityError:
-        return {"error": "Username already exists or the user doesn't exist"}
+        return False
 
 
 # Utilities

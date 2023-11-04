@@ -3,6 +3,11 @@
 let sidebarOpen = false;
 const sidebar = document.getElementById('sidebar');
 
+function gotoLogin(session_id) {
+    document.cookie = `session_id=${session_id};`;
+    window.location.href = "/logout"
+}
+
 function openSidebar() {
     if (!sidebarOpen) {
         sidebar.classList.add('sidebar-responsive');
@@ -28,6 +33,9 @@ function gotoDashboard(session_id) {
     document.cookie = `session_id=${session_id};`;
     window.location.href = "/dashboard";
 }
+
+
+
 // ---------- CHARTS ----------
 
 // BAR CHART

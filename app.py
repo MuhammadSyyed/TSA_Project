@@ -2,12 +2,9 @@ from fastapi import FastAPI, HTTPException, Depends, Request, status, Form
 from fastapi.templating import Jinja2Templates
 from db_utils import expire_session_for_user, get_user, add_user, get_user_by_session_id, log, add_session, valid_session
 import models as model
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.staticfiles import StaticFiles
-import configs as config
 import random
-from datetime import datetime, timedelta
-from pathlib import Path
+from datetime import datetime
 templates = Jinja2Templates(directory="templates")
 
 app = FastAPI()
@@ -63,8 +60,8 @@ def read_current_user(user: model.User = Depends(verify_through_session_id)):
 @app.post("/login", response_model=dict)
 def login(request: Request, user: model.User = Depends(authenticate_user)):
     session_id = create_session(user)
-    context = {"request": request,"session_id":session_id}
-    return templates.TemplateResponse("dashboard.html",context=context)
+    context = {"request": request, "session_id": session_id}
+    return templates.TemplateResponse("dashboard.html", context=context)
 
 
 @app.post("/signup", response_model=dict)
@@ -83,25 +80,36 @@ def check(verified=Depends(verify_through_session_id)):
     return {"message": "Authorized!"}
 
 
-@app.post("/logout")
-def logout(verified=Depends(verify_through_session_id)):
-    if not verified:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
-    return expire_session_for_user(verified)
+@app.get("/logout")
+def logout(request: Request, verified=Depends(verify_through_session_id)):
+
+    if verified and expire_session_for_user(verified):
+        context = {"request": request}
+        return templates.TemplateResponse('login.html', context=context)
+    else:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+
 
 @app.get("/users")
-def users(request:Request,verified=Depends(verify_through_session_id)):
+def users(request: Request, verified=Depends(verify_through_session_id)):
     if not verified:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Not authenticated")
-    context = {"request":request,"session_id" :int(request.cookies.get("session_id"))}
-    return templates.TemplateResponse('users.html',context=context)
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+    context = {"request": request, "session_id": int(
+        request.cookies.get("session_id"))}
+    return templates.TemplateResponse('users.html', context=context)
+
 
 @app.get("/dashboard")
-def dashboard(request:Request,verified=Depends(verify_through_session_id)):
+def dashboard(request: Request, verified=Depends(verify_through_session_id)):
     if not verified:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Not authenticated")
-    context = {"request": request,"session_id":int(request.cookies.get("session_id"))}
-    return templates.TemplateResponse('dashboard.html',context=context)
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+
+    context = {"request": request, "session_id": int(
+        request.cookies.get("session_id"))}
+    return templates.TemplateResponse('dashboard.html', context=context)

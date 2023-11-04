@@ -47,8 +47,11 @@
 
             <ul class="sidebar-list">
                 {% block sidebarlist %}{% endblock %}
-
+                <li class="sidebar-list-item" onclick="gotoLogin('{{session_id}}')" style="margin-top: 145%;">
+                    <a><span class="material-icons-outlined">logout</span> Logout</a>
+                </li>
             </ul>
+
         </aside>
         <!-- End Sidebar -->
 
@@ -67,7 +70,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.3/apexcharts.min.js"></script>
     <!-- Custom JS -->
     <script src="{{ url_for('static', path='js/app.js') }}"></script>
-   
+
 </body>
 
 </html>
