@@ -14,12 +14,6 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 def authenticate_user(username: str = Form(...), password: str = Form(...)):
     user_data = model.UserLogin(**{"username": username, "password": password})
     user = get_user(user_data)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid credentials",
-            headers={"WWW-Authenticate": "Basic"},
-        )
     return user
 
 
@@ -27,13 +21,10 @@ def verify_through_session_id(request: Request):
     try:
         session_id = int(request.cookies.get("session_id"))
         if not valid_session(session_id):
-            raise HTTPException(
-                status_code=401,
-                detail="Invalid session ID",
-            )
+            return None
         print(f"Getting user for {session_id}")
-        user = get_user_by_session_id(session_id)
-        return user
+        return get_user_by_session_id(session_id)
+
     except Exception as e:
         return None
 
@@ -45,38 +36,44 @@ def create_session(user: model.User):
                              created_at=datetime.now().timestamp(), valid_before=datetime.now().timestamp()+3600))
     return session_id
 
-
 @app.get('/')
 def index(request: Request):
-    context = {"request": request}
+    context = {"request": request, "message": "login"}
     return templates.TemplateResponse("login.html", context=context)
 
 
 @app.get("/me")
-def read_current_user(user: model.User = Depends(verify_through_session_id)):
-    return user
+def read_current_user(request: Request, verified=Depends(verify_through_session_id)):
+    if verified:
+        return verified
 
 
 @app.post("/login", response_model=dict)
 def login(request: Request, user: model.User = Depends(authenticate_user)):
-    session_id = create_session(user)
-    context = {"request": request, "session_id": session_id}
-    return templates.TemplateResponse("dashboard.html", context=context)
+    if user:
+        session_id = create_session(user)
+        context = {"request": request, "session_id": session_id,"user":user}
+        return templates.TemplateResponse("dashboard.html", context=context)
+    else:
+        context = {"request": request, "message":"Wrong Credentials!"}
+        return templates.TemplateResponse("login.html",context=context)
 
 
 @app.post("/signup", response_model=dict)
-def signup(user: model.UserCreate, verified=Depends(verify_through_session_id)):
+def signup(request: Request, user: model.UserCreate, verified=Depends(verify_through_session_id)):
     if not verified:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Not authenticated")
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
     return add_user(user)
 
 
-@app.post("/verify")
-def check(verified=Depends(verify_through_session_id)):
+@app.get("/verify")
+def check(request: Request, verified=Depends(verify_through_session_id)):
     if not verified:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Not authenticated")
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
     return {"message": "Authorized!"}
 
 
@@ -84,7 +81,7 @@ def check(verified=Depends(verify_through_session_id)):
 def logout(request: Request, verified=Depends(verify_through_session_id)):
 
     if verified and expire_session_for_user(verified):
-        context = {"request": request}
+        context = {"request": request, "message": "Logged out successfully!"}
         return templates.TemplateResponse('login.html', context=context)
     else:
         context = {"request": request,
@@ -99,7 +96,7 @@ def users(request: Request, verified=Depends(verify_through_session_id)):
                    "message": "Unauthorized Access Denied!"}
         return templates.TemplateResponse('login.html', context=context)
     context = {"request": request, "session_id": int(
-        request.cookies.get("session_id"))}
+        request.cookies.get("session_id")),"user":verified}
     return templates.TemplateResponse('users.html', context=context)
 
 
@@ -111,5 +108,5 @@ def dashboard(request: Request, verified=Depends(verify_through_session_id)):
         return templates.TemplateResponse('login.html', context=context)
 
     context = {"request": request, "session_id": int(
-        request.cookies.get("session_id"))}
+        request.cookies.get("session_id")),"user":verified}
     return templates.TemplateResponse('dashboard.html', context=context)

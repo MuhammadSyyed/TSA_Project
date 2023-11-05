@@ -28,10 +28,8 @@
             <div class="header-left">
                 <span class="material-icons-outlined">search</span>
             </div>
-            <div class="header-right">
-                <span class="material-icons-outlined">notifications</span>
-                <span class="material-icons-outlined">email</span>
-                <span class="material-icons-outlined">account_circle</span>
+            <div class="header-right" style="border-radius: 5px; background-color:rgb(225, 224, 224); padding: 10px;">
+                <span class="material-icons-outlined">person</span> {{user.username}}
             </div>
         </header>
         <!-- End Header -->
@@ -47,8 +45,10 @@
 
             <ul class="sidebar-list">
                 {% block sidebarlist %}{% endblock %}
-                <li class="sidebar-list-item" onclick="gotoLogin('{{session_id}}')" style="margin-top: 145%;">
-                    <a><span class="material-icons-outlined">logout</span> Logout</a>
+                <li onclick="gotoLogin('{{session_id}}')" class="sidebar-list-item">
+                    <a><span class="material-icons-outlined">logout</span>
+                        Logout</a>
+                </li>
                 </li>
             </ul>
 

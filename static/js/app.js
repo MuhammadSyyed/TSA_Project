@@ -34,8 +34,15 @@ function gotoDashboard(session_id) {
     window.location.href = "/dashboard";
 }
 
+function sendMessage(message) {
+    if (message !== "login") {
+        alert(message);
+    }
+}
 
-
+function getMe(session_id){
+    alert(session_id);
+}
 // ---------- CHARTS ----------
 
 // BAR CHART
