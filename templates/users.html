@@ -40,3 +40,35 @@
     </a>
 </li>
 {% endblock %}
+{% block quickbutton %} <button class="quickbutton">+ Add User</button>{% endblock %}
+
+{% block main_cards %}
+
+<div class="user-card">
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Role</th>
+                <th style="text-align: center;">Edit</th>
+                <th style="text-align: center;">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for usr in users %}
+            <tr>
+                <td>{{usr.id}}</td>
+                <td>{{usr.username}}</td>
+                <td>{{usr.role.value}}</td>
+                <td style="text-align: center;"><span class="edit-icon"></span></td>
+                <td style="text-align: center;"><span class="delete-icon"></span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Depends, Request, status, Form
 from fastapi.templating import Jinja2Templates
-from db_utils import expire_session_for_user, get_user, add_user, get_user_by_session_id, log, add_session, valid_session
+from db_utils import *
 import models as model
 from fastapi.staticfiles import StaticFiles
 import random
@@ -36,6 +36,7 @@ def create_session(user: model.User):
                              created_at=datetime.now().timestamp(), valid_before=datetime.now().timestamp()+3600))
     return session_id
 
+
 @app.get('/')
 def index(request: Request):
     context = {"request": request, "message": "login"}
@@ -52,11 +53,11 @@ def read_current_user(request: Request, verified=Depends(verify_through_session_
 def login(request: Request, user: model.User = Depends(authenticate_user)):
     if user:
         session_id = create_session(user)
-        context = {"request": request, "session_id": session_id,"user":user}
+        context = {"request": request, "session_id": session_id, "user": user}
         return templates.TemplateResponse("dashboard.html", context=context)
     else:
-        context = {"request": request, "message":"Wrong Credentials!"}
-        return templates.TemplateResponse("login.html",context=context)
+        context = {"request": request, "message": "Wrong Credentials!"}
+        return templates.TemplateResponse("login.html", context=context)
 
 
 @app.post("/signup", response_model=dict)
@@ -95,8 +96,9 @@ def users(request: Request, verified=Depends(verify_through_session_id)):
         context = {"request": request,
                    "message": "Unauthorized Access Denied!"}
         return templates.TemplateResponse('login.html', context=context)
+    users = get_all_users()
     context = {"request": request, "session_id": int(
-        request.cookies.get("session_id")),"user":verified}
+        request.cookies.get("session_id")), "user": verified, "users": users}
     return templates.TemplateResponse('users.html', context=context)
 
 
@@ -108,5 +110,5 @@ def dashboard(request: Request, verified=Depends(verify_through_session_id)):
         return templates.TemplateResponse('login.html', context=context)
 
     context = {"request": request, "session_id": int(
-        request.cookies.get("session_id")),"user":verified}
+        request.cookies.get("session_id")), "user": verified}
     return templates.TemplateResponse('dashboard.html', context=context)
