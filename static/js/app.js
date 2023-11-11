@@ -40,7 +40,44 @@ function sendMessage(message) {
     }
 }
 
-function getMe(session_id){
+function gotoAddUser(session_id) {
+    console.log("adding user")
+    document.cookie = `session_id=${session_id};`;
+    window.location.href = "/add_user";
+}
+
+function signUp(event, session_id) {
+    event.preventDefault(); // Prevents the default form submission behavior
+
+    var formData = {
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value,
+        role: document.getElementById('role').value
+    };
+    console.log(formData)
+
+    fetch('/signup', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Cookie': 'session_id' + `${session_id}`,
+        },
+        body: JSON.stringify(formData),
+
+    }).then(response => response.json())  // This returns a promise
+    .then(data => {
+        alert(data.message);  // Now you can access the data
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+    document.cookie = `session_id=${session_id};`;
+    window.location.href = "/users";
+
+}
+
+function getMe(session_id) {
     alert(session_id);
 }
 // ---------- CHARTS ----------

@@ -3,7 +3,7 @@ from fastapi.templating import Jinja2Templates
 from db_utils import *
 import models as model
 from fastapi.staticfiles import StaticFiles
-import random
+import random,json
 from datetime import datetime
 templates = Jinja2Templates(directory="templates")
 
@@ -61,12 +61,13 @@ def login(request: Request, user: model.User = Depends(authenticate_user)):
 
 
 @app.post("/signup", response_model=dict)
-def signup(request: Request, user: model.UserCreate, verified=Depends(verify_through_session_id)):
+async def signup(request: Request, user: model.UserCreate, verified=Depends(verify_through_session_id)):
+
     if not verified:
         context = {"request": request,
                    "message": "Unauthorized Access Denied!"}
         return templates.TemplateResponse('login.html', context=context)
-    return add_user(user)
+    return add_new_user(user)
 
 
 @app.get("/verify")
@@ -112,3 +113,15 @@ def dashboard(request: Request, verified=Depends(verify_through_session_id)):
     context = {"request": request, "session_id": int(
         request.cookies.get("session_id")), "user": verified}
     return templates.TemplateResponse('dashboard.html', context=context)
+
+
+@app.get("/add_user")
+def add_user(request: Request, verified=Depends(verify_through_session_id)):
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+
+    context = {"request": request, "session_id": int(
+        request.cookies.get("session_id")), "user": verified}
+    return templates.TemplateResponse('add_user.html', context=context)

@@ -102,7 +102,7 @@ def create_table(conn, table_schema):
 # Users Related Functions
 
 
-def add_user(user: UserCreate):
+def add_new_user(user: UserCreate):
     try:
         conn = sqlite3.connect(configs.db_file)
         cursor = conn.cursor()

@@ -16,8 +16,9 @@ class Session(SessionCreate):
 
 class UserRole(str, Enum):
     admin = "admin"
-    coo = "coo"
+    coo = "COO"
     ci = "CI"
+    master="master"
 
 
 class UserBase(BaseModel):
