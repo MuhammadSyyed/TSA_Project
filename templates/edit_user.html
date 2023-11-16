@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block main_title%}<p class="font-weight-bold">USERS</p>{% endblock %}
+{% block main_title%}<p class="font-weight-bold">EDIT USER</p>{% endblock %}
 
 {% block sidebarlist %}
 <li class="sidebar-list-item" onclick="gotoDashboard('{{session_id}}')">
@@ -40,38 +40,27 @@
     </a>
 </li>
 {% endblock %}
-{% block quickbutton %} <button onclick="gotoAddUser('{{session_id}}')" class="quickbutton">+ Add User</button>{%
-endblock %}
 
 {% block main_cards %}
+<div class="form-container">
 
-<div class="user-card">
+    <form onsubmit="updateUser(event,'{{session_id}}','{{user_to_edit.id}}')" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="{{user_to_edit.username}}" required>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Role</th>
-                <th style="text-align: center;">Edit</th>
-                <th style="text-align: center;">Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for usr in users %}
-            <tr>
-                <td>{{usr.id}}</td>
-                <td>{{usr.username}}</td>
-                <td>{{usr.role.value}}</td>
-                <td style="text-align: center;"><span onclick="editUser('{{usr.id}}','{{session_id}}')"
-                        class="edit-icon"></span>
-                </td>
-                <td style="text-align: center;"><span class="delete-icon"></span>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter New Password" required>
+
+        <label for="role">Role:</label>
+        <select id="role" name="role">
+            <option value="" disabled selected>{{user_to_edit.role.value}}</option>
+            <option value="admin">admin</option>
+            <option value="CI">CI</option>
+            <option value="COO">COO</option>
+            <option value="master">master</option>
+        </select>
+
+        <button type="submit">Update</button>
+    </form>
 </div>
-
 {% endblock %}

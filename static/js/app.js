@@ -28,6 +28,53 @@ function gotoUsers(session_id) {
     window.location.href = "/users";
 }
 
+function editUser(user_id, session_id) {
+    console.log(user_id);
+    var dtl = { id: user_id }
+    fetch(`/edit_user?id=${user_id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Cookie': 'session_id' + `${session_id}`
+        }
+    })
+    document.cookie = `session_id=${session_id};`;
+    window.location.href = `/edit_user?id=${user_id}`;
+
+}
+
+function updateUser(event, session_id, user_id) {
+    event.preventDefault(); // Prevents the default form submission behavior
+
+    var formData = {
+        id: user_id,
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value,
+        role: document.getElementById('role').value
+    };
+    console.log(formData)
+
+    fetch('/update_user', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Cookie': 'session_id' + `${session_id}`,
+        },
+        body: JSON.stringify(formData),
+
+    }).then(response => response.json())  // This returns a promise
+        .then(data => {
+            alert(data.message);  // Now you can access the data
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+    document.cookie = `session_id=${session_id};`;
+    window.location.href = "/users";
+
+}
+
 function gotoDashboard(session_id) {
     console.log(session_id)
     document.cookie = `session_id=${session_id};`;
@@ -65,12 +112,12 @@ function signUp(event, session_id) {
         body: JSON.stringify(formData),
 
     }).then(response => response.json())  // This returns a promise
-    .then(data => {
-        alert(data.message);  // Now you can access the data
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+        .then(data => {
+            alert(data.message);  // Now you can access the data
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 
     document.cookie = `session_id=${session_id};`;
     window.location.href = "/users";

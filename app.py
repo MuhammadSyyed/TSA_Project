@@ -1,9 +1,10 @@
-from fastapi import FastAPI, HTTPException, Depends, Request, status, Form
+from fastapi import FastAPI, HTTPException, Depends, Request, status, Form, Query, Body
 from fastapi.templating import Jinja2Templates
 from db_utils import *
 import models as model
 from fastapi.staticfiles import StaticFiles
-import random,json
+import random
+import json
 from datetime import datetime
 templates = Jinja2Templates(directory="templates")
 
@@ -125,3 +126,25 @@ def add_user(request: Request, verified=Depends(verify_through_session_id)):
     context = {"request": request, "session_id": int(
         request.cookies.get("session_id")), "user": verified}
     return templates.TemplateResponse('add_user.html', context=context)
+
+
+@app.get("/edit_user")
+def edit_user(request: Request, id: int, verified=Depends(verify_through_session_id)):
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+    user_to_edit = get_one_user(id)
+
+    context = {"request": request, "session_id": int(
+        request.cookies.get("session_id")), "user": verified, 'user_to_edit': user_to_edit}
+    return templates.TemplateResponse('edit_user.html', context=context)
+
+
+@app.post("/update_user")
+def update_user(request: Request, user: UserUpdate, verified=Depends(verify_through_session_id)):
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+    return update_and_save_user(user)

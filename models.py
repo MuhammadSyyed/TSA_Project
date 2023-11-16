@@ -18,7 +18,7 @@ class UserRole(str, Enum):
     admin = "admin"
     coo = "COO"
     ci = "CI"
-    master="master"
+    master = "master"
 
 
 class UserBase(BaseModel):
@@ -41,6 +41,8 @@ class User(UserBase):
 class UserDelete(BaseModel):
     id: int
 
+class UserEdit(BaseModel):
+    id: int
 
 class UserLogin(BaseModel):
     username: str

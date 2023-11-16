@@ -112,7 +112,7 @@ def add_new_user(user: UserCreate):
         conn.close()
         return {"message": "User added successfully"}
     except sqlite3.IntegrityError:
-        return {"Error": "Username already exists"}
+        return {"message": "Username already exists"}
 
 
 def get_user(user: UserLogin):
@@ -132,6 +132,22 @@ def get_user(user: UserLogin):
         }
         return User(**user_data)
 
+def get_one_user(user_id:int):
+    conn = sqlite3.connect(configs.db_file)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute(
+        'SELECT * FROM USERS WHERE ID = ?', (user_id,))
+    user = cursor.fetchone()
+    conn.close()
+
+    if user:
+        user_data = {
+            "id": user['id'],
+            "username": user['username'],
+            "role": UserRole(user['role'])
+        }
+        return User(**user_data)
 
 def get_all_users():
     conn = sqlite3.connect(configs.db_file)
@@ -149,8 +165,7 @@ def get_all_users():
         }) for user in all_users]
     return all_users
 
-
-def update_user(user: UserUpdate):
+def update_and_save_user(user: UserUpdate):
     try:
         conn = sqlite3.connect(configs.db_file)
         cursor = conn.cursor()
@@ -161,7 +176,6 @@ def update_user(user: UserUpdate):
         return {"message": "User updated successfully"}
     except sqlite3.IntegrityError:
         return {"error": "Username already exists or the user doesn't exist"}
-
 
 def delete_user(user: UserDelete):
     try:
@@ -179,7 +193,6 @@ def delete_user(user: UserDelete):
         return {"error": "An error occurred while deleting the user: " + str(e)}
 
 # Students Related Functions
-
 
 def add_student(student: Student):
     try:
