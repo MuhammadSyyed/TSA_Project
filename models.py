@@ -43,6 +43,9 @@ class UserDelete(BaseModel):
 
 class UserEdit(BaseModel):
     id: int
+    username: str
+    password: str
+    role : UserRole
 
 class UserLogin(BaseModel):
     username: str

@@ -49,11 +49,11 @@
         <input type="text" id="username" name="username" value="{{user_to_edit.username}}" required>
 
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" placeholder="Enter New Password" required>
+        <input type="text" id="password" name="password" value="{{user_to_edit.password}}" required>
 
         <label for="role">Role:</label>
         <select id="role" name="role">
-            <option value="" disabled selected>{{user_to_edit.role.value}}</option>
+            <option value="{{user_to_edit.role.value}}" disabled selected>{{user_to_edit.role.value}}</option>
             <option value="admin">admin</option>
             <option value="CI">CI</option>
             <option value="COO">COO</option>

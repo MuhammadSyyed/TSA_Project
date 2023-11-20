@@ -148,3 +148,12 @@ def update_user(request: Request, user: UserUpdate, verified=Depends(verify_thro
                    "message": "Unauthorized Access Denied!"}
         return templates.TemplateResponse('login.html', context=context)
     return update_and_save_user(user)
+
+
+@app.post('/delete_user')
+def delete_user(request:Request,user:UserDelete,verified=Depends(verify_through_session_id)):
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+    return delete_one_user(user)

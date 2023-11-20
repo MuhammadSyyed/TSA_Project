@@ -101,7 +101,6 @@ def create_table(conn, table_schema):
 
 # Users Related Functions
 
-
 def add_new_user(user: UserCreate):
     try:
         conn = sqlite3.connect(configs.db_file)
@@ -113,7 +112,6 @@ def add_new_user(user: UserCreate):
         return {"message": "User added successfully"}
     except sqlite3.IntegrityError:
         return {"message": "Username already exists"}
-
 
 def get_user(user: UserLogin):
     conn = sqlite3.connect(configs.db_file)
@@ -145,9 +143,10 @@ def get_one_user(user_id:int):
         user_data = {
             "id": user['id'],
             "username": user['username'],
+            "password": user['password'],
             "role": UserRole(user['role'])
         }
-        return User(**user_data)
+        return UserEdit(**user_data)
 
 def get_all_users():
     conn = sqlite3.connect(configs.db_file)
@@ -177,7 +176,7 @@ def update_and_save_user(user: UserUpdate):
     except sqlite3.IntegrityError:
         return {"error": "Username already exists or the user doesn't exist"}
 
-def delete_user(user: UserDelete):
+def delete_one_user(user: UserDelete):
     try:
         conn = sqlite3.connect(configs.db_file)
         cursor = conn.cursor()

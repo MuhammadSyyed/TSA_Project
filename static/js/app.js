@@ -127,6 +127,32 @@ function signUp(event, session_id) {
 function getMe(session_id) {
     alert(session_id);
 }
+
+function deleteUser(user_id, session_id) {
+    var formData = {
+        id: user_id
+    };
+    console.log(formData)
+
+    fetch('/delete_user', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Cookie': 'session_id' + `${session_id}`,
+        },
+        body: JSON.stringify(formData),
+
+    }).then(response => response.json())  // This returns a promise
+        .then(data => {
+            alert(data.message);  // Now you can access the data
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+    document.cookie = `session_id=${session_id};`;
+    window.location.href = "/users";
+}
 // ---------- CHARTS ----------
 
 // BAR CHART
