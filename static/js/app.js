@@ -1,7 +1,27 @@
-// SIDEBAR TOGGLE
 
 let sidebarOpen = false;
 const sidebar = document.getElementById('sidebar');
+
+function timedPopup(type, message, goto, session_id) {
+    let timerInterval;
+    Swal.fire({
+        title: message,
+        icon: type,
+        timer: 1500,
+        timerProgressBar: true,
+        didOpen: () => {
+            Swal.showLoading();
+        },
+        willClose: () => {
+            clearInterval(timerInterval);
+            document.cookie = `session_id=${session_id};`;
+            window.location.href = `/${goto}`;
+        }
+    }).then((result) => {
+        if (result.dismiss === Swal.DismissReason.timer) {
+        }
+    });
+}
 
 function gotoLogin(session_id) {
     document.cookie = `session_id=${session_id};`;
@@ -52,27 +72,36 @@ function updateUser(event, session_id, user_id) {
         password: document.getElementById('password').value,
         role: document.getElementById('role').value
     };
-    console.log(formData)
+    console.log(formData);
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, update it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
 
-    fetch('/update_user', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Cookie': 'session_id' + `${session_id}`,
-        },
-        body: JSON.stringify(formData),
+            fetch('/update_user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cookie': 'session_id' + `${session_id}`,
+                },
+                body: JSON.stringify(formData),
 
-    }).then(response => response.json())  // This returns a promise
-        .then(data => {
-            alert(data.message);  // Now you can access the data
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+            }).then(response => response.json())  // This returns a promise
+                .then(data => {
+                    timedPopup("success", data.message, 'users', session_id);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
 
-    document.cookie = `session_id=${session_id};`;
-    window.location.href = "/users";
-
+        }
+    });
 }
 
 function gotoDashboard(session_id) {
@@ -113,14 +142,17 @@ function signUp(event, session_id) {
 
     }).then(response => response.json())  // This returns a promise
         .then(data => {
-            alert(data.message);  // Now you can access the data
+            console.log(data);
+            if (data.success) {
+                timedPopup("success", data.message, 'users', session_id);
+
+            } else {
+                timedPopup("warning", data.message, 'users', session_id);
+            }
         })
         .catch(error => {
             console.error('Error:', error);
         });
-
-    document.cookie = `session_id=${session_id};`;
-    window.location.href = "/users";
 
 }
 
@@ -134,24 +166,36 @@ function deleteUser(user_id, session_id) {
     };
     console.log(formData)
 
-    fetch('/delete_user', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Cookie': 'session_id' + `${session_id}`,
-        },
-        body: JSON.stringify(formData),
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
 
-    }).then(response => response.json())  // This returns a promise
-        .then(data => {
-            alert(data.message);  // Now you can access the data
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+            fetch('/delete_user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cookie': 'session_id' + `${session_id}`,
+                },
+                body: JSON.stringify(formData),
 
-    document.cookie = `session_id=${session_id};`;
-    window.location.href = "/users";
+            }).then(response => response.json())  // This returns a promise
+                .then(data => {
+                    timedPopup("success", data.message, 'users', session_id);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+        }
+    });
+
 }
 // ---------- CHARTS ----------
 

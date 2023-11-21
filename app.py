@@ -77,7 +77,7 @@ def check(request: Request, verified=Depends(verify_through_session_id)):
         context = {"request": request,
                    "message": "Unauthorized Access Denied!"}
         return templates.TemplateResponse('login.html', context=context)
-    return {"message": "Authorized!"}
+    return {"sucess":True,"message": "Authorized!"}
 
 
 @app.get("/logout")

@@ -27,7 +27,9 @@ def add_session(session: Session):
         conn.close()
         return session.session_id+int(rows["total"])
     except sqlite3.IntegrityError:
-        return {"Error": "Session Already Exists!"}
+        conn.commit()
+        conn.close()
+        return {"success": False, "Error": "Session Already Exists!"}
 
 
 def valid_session(session_id: int):
@@ -101,6 +103,7 @@ def create_table(conn, table_schema):
 
 # Users Related Functions
 
+
 def add_new_user(user: UserCreate):
     try:
         conn = sqlite3.connect(configs.db_file)
@@ -109,9 +112,12 @@ def add_new_user(user: UserCreate):
                        (user.username, user.password, user.role))
         conn.commit()
         conn.close()
-        return {"message": "User added successfully"}
+        return {"success": True, "message": "User added successfully"}
     except sqlite3.IntegrityError:
-        return {"message": "Username already exists"}
+        conn.commit()
+        conn.close()
+        return {"success": False, "message": "Username already exists"}
+
 
 def get_user(user: UserLogin):
     conn = sqlite3.connect(configs.db_file)
@@ -130,7 +136,8 @@ def get_user(user: UserLogin):
         }
         return User(**user_data)
 
-def get_one_user(user_id:int):
+
+def get_one_user(user_id: int):
     conn = sqlite3.connect(configs.db_file)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
@@ -148,6 +155,7 @@ def get_one_user(user_id:int):
         }
         return UserEdit(**user_data)
 
+
 def get_all_users():
     conn = sqlite3.connect(configs.db_file)
     conn.row_factory = sqlite3.Row
@@ -164,6 +172,7 @@ def get_all_users():
         }) for user in all_users]
     return all_users
 
+
 def update_and_save_user(user: UserUpdate):
     try:
         conn = sqlite3.connect(configs.db_file)
@@ -172,9 +181,12 @@ def update_and_save_user(user: UserUpdate):
                        (user.username, user.password, user.role, user.id))
         conn.commit()
         conn.close()
-        return {"message": "User updated successfully"}
+        return {"success": True, "message": "User updated successfully"}
     except sqlite3.IntegrityError:
-        return {"error": "Username already exists or the user doesn't exist"}
+        conn.commit()
+        conn.close()
+        return {"success": False, "message": "Username already exists or the user doesn't exist"}
+
 
 def delete_one_user(user: UserDelete):
     try:
@@ -185,13 +197,14 @@ def delete_one_user(user: UserDelete):
         conn.commit()
         conn.close()
         if cursor.rowcount == 1:
-            return {"message": "User deleted successfully"}
+            return {"success": True, "message": "User deleted successfully"}
         else:
-            return {"error": "User not found"}
+            return {"success": False, "message": "User not found"}
     except sqlite3.Error as e:
-        return {"error": "An error occurred while deleting the user: " + str(e)}
+        return {"success": False, "message": "An error occurred while deleting the user: " + str(e)}
 
 # Students Related Functions
+
 
 def add_student(student: Student):
     try:
@@ -209,9 +222,11 @@ def add_student(student: Student):
              ))
         conn.commit()
         conn.close()
-        return {"message": "Student added successfully"}
+        return {"success": True, "message": "Student added successfully"}
     except sqlite3.IntegrityError:
-        return {"Error": "Student already exists"}
+        conn.commit()
+        conn.close()
+        return {"success": False, "message": "Student already exists"}
 
 
 def update_student(student: UpdateStudent):
@@ -222,9 +237,11 @@ def update_student(student: UpdateStudent):
                        (student.CAMPUS_ID, student.NAME, student.ROLL_NO, student.BATCH, student.DATE_JOINED, student.IMAGE, student.STUDENT_ID))
         conn.commit()
         conn.close()
-        return {"message": "Student updated successfully"}
+        return {"success": True, "message": "Student updated successfully"}
     except sqlite3.IntegrityError:
-        return {"error": "Student already exists or the student doesn't exist"}
+        conn.commit()
+        conn.close()
+        return {"success": False, "message": "Student already exists or the student doesn't exist"}
 
 
 def get_student(student: Student):
