@@ -198,3 +198,26 @@ def examination_board(request: Request, verified=Depends(verify_through_session_
     context = {"request": request, "session_id": int(
         request.cookies.get("session_id")), "user": verified}
     return templates.TemplateResponse('examination_board.html', context=context)
+
+
+@app.get('/add_marks')
+def add_mark(request: Request, verified=Depends(verify_through_session_id)):
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+    context = {"request": request, "session_id": int(
+        request.cookies.get("session_id")), "user": verified}
+    return templates.TemplateResponse('add_marks.html', context=context)
+
+
+# Student Related Routes
+@app.get('/students')
+def students(request: Request, verified=Depends(verify_through_session_id)):
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+    context = {"request": request, "session_id": int(
+        request.cookies.get("session_id")), "user": verified}
+    return templates.TemplateResponse('students.html', context=context)

@@ -215,6 +215,20 @@ function deleteUser(user_id, session_id) {
     });
 
 }
+
+function gotoAddMarks(session_id){
+    console.log(session_id)
+    document.cookie = `session_id=${session_id};`;
+    window.location.href = "/add_marks";
+}
+
+
+function gotoStudents(session_id){
+    console.log(session_id)
+    document.cookie = `session_id=${session_id};`;
+    window.location.href = "/students";
+
+}
 // ---------- CHARTS ----------
 
 // BAR CHART
