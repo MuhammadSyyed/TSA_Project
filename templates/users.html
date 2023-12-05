@@ -1,45 +1,7 @@
 {% extends "base.html" %}
 
-{% block main_title%}<p class="font-weight-bold">USERS</p>{% endblock %}
+{% block main_title%}USERS{% endblock %}
 
-{% block sidebarlist %}
-<li class="sidebar-list-item" onclick="gotoDashboard('{{session_id}}')">
-    <a>
-        <span class="material-icons-outlined">dashboard</span> Dashboard
-    </a>
-</li>
-<!--
-<li class="sidebar-list-item">
-    <a href="/">
-        <span class="material-icons-outlined">inventory_2</span> Products
-    </a>
-</li>
-<li class="sidebar-list-item">
-    <a href="/">
-        <span class="material-icons-outlined">fact_check</span> Inventory
-    </a>
-</li>
-<li class="sidebar-list-item">
-    <a href="/">
-        <span class="material-icons-outlined">add_shopping_cart</span> Purchase Orders
-    </a>
-</li>
-<li class="sidebar-list-item">
-    <a href="/">
-        <span class="material-icons-outlined">shopping_cart</span> Sales Orders
-    </a>
-</li>
-<li class="sidebar-list-item">
-    <a href="/">
-        <span class="material-icons-outlined">poll</span> Reports
-    </a>
-</li> -->
-<li class="sidebar-list-item" onclick="gotoUsers('{{session_id}}')">
-    <a>
-        <span class="material-icons-outlined">face</span> Users
-    </a>
-</li>
-{% endblock %}
 {% block quickbutton %} <button onclick="gotoAddUser('{{session_id}}')" class="quickbutton">+ Add User</button>{%
 endblock %}
 

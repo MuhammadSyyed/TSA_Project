@@ -33,10 +33,10 @@
             <div class="menu-icon" onclick="openSidebar()">
                 <span class="material-icons-outlined">menu</span>
             </div>
-            <div class="header-left">
-                <span class="material-icons-outlined">search</span>
+            <div class="main-title">
+                <p class="font-weight-bold">{% block main_title %}{% endblock %}</p>
             </div>
-            <div class="header-right" style="border-radius: 5px; background-color:rgb(225, 224, 224); padding: 10px;">
+            <div class="header-right" style="border-radius: 5px; color: #9799ab; padding: 10px;">
                 <span class="material-icons-outlined">person</span> {{user.username}}
             </div>
         </header>
@@ -52,7 +52,34 @@
             </div>
 
             <ul class="sidebar-list">
-                {% block sidebarlist %}{% endblock %}
+                <!-- {% block sidebarlist %} -->
+                <li class="sidebar-list-item" onclick="gotoDashboard('{{session_id}}')">
+                    <a>
+                        <span class="material-icons-outlined">dashboard</span> Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-list-item" onclick="gotoUsers('{{session_id}}')">
+                    <a>
+                        <span class="material-icons-outlined">face</span> Users
+                    </a>
+                </li>
+                <li class="sidebar-list-item" onclick="gotoSubjects('{{session_id}}')">
+                    <a>
+                        <span class="material-icons-outlined">description</span> Subjects
+                    </a>
+
+                </li>
+                <li class="sidebar-list-item" onclick="gotoResults('{{session_id}}')">
+                    <a>
+                        <span class="material-icons-outlined">school</span> Results
+                    </a>
+                </li>
+                <li class="sidebar-list-item" onclick="gotoExaminationBoard('{{session_id}}')">
+                    <a>
+                        <span class="material-icons-outlined">content_paste</span> Examination
+                    </a>
+                </li>
+                <!-- {% endblock %} -->
                 <li onclick="gotoLogin('{{session_id}}')" class="sidebar-list-item">
                     <a><span class="material-icons-outlined">logout</span>
                         Logout</a>
@@ -65,7 +92,10 @@
 
         <!-- Main -->
         <main class="main-container">
-            <div class="main-title">{% block main_title %}{% endblock %}</div>
+            {% block content %}
+            
+            {% endblock %}
+
             {% block quickbutton %}{% endblock%}
             <div class="main-cards">{% block main_cards %}{% endblock %}</div>
             <div class="charts">{% block charts %}{% endblock %}</div>

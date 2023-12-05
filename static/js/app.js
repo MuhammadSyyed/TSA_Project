@@ -48,6 +48,24 @@ function gotoUsers(session_id) {
     window.location.href = "/users";
 }
 
+function gotoSubjects(session_id) {
+    console.log(session_id)
+    document.cookie = `session_id=${session_id};`;
+    window.location.href = "/subjects";
+}
+
+function gotoResults(session_id) {
+    console.log(session_id)
+    document.cookie = `session_id=${session_id};`;
+    window.location.href = "/results";
+}
+
+function gotoExaminationBoard(session_id) {
+    console.log(session_id)
+    document.cookie = `session_id=${session_id};`;
+    window.location.href = "/examination_board";
+}
+
 function editUser(user_id, session_id) {
     console.log(user_id);
     var dtl = { id: user_id }
@@ -210,7 +228,7 @@ const barChartOptions = {
         type: 'bar',
         height: 350,
         toolbar: {
-            show: false,
+            show: true,
         },
     },
     colors: ['#246dec', '#cc3c43', '#367952', '#f5b74f', '#4f35a1'],

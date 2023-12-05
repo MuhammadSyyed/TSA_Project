@@ -77,7 +77,7 @@ def check(request: Request, verified=Depends(verify_through_session_id)):
         context = {"request": request,
                    "message": "Unauthorized Access Denied!"}
         return templates.TemplateResponse('login.html', context=context)
-    return {"sucess":True,"message": "Authorized!"}
+    return {"sucess": True, "message": "Authorized!"}
 
 
 @app.get("/logout")
@@ -90,6 +90,8 @@ def logout(request: Request, verified=Depends(verify_through_session_id)):
         context = {"request": request,
                    "message": "Unauthorized Access Denied!"}
         return templates.TemplateResponse('login.html', context=context)
+
+# User Related Routes
 
 
 @app.get("/users")
@@ -151,9 +153,48 @@ def update_user(request: Request, user: UserUpdate, verified=Depends(verify_thro
 
 
 @app.post('/delete_user')
-def delete_user(request:Request,user:UserDelete,verified=Depends(verify_through_session_id)):
+def delete_user(request: Request, user: UserDelete, verified=Depends(verify_through_session_id)):
     if not verified:
         context = {"request": request,
                    "message": "Unauthorized Access Denied!"}
         return templates.TemplateResponse('login.html', context=context)
     return delete_one_user(user)
+
+# Subject Related Routes
+
+
+@app.get('/subjects')
+def subjects(request: Request, verified=Depends(verify_through_session_id)):
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+    context = {"request": request, "session_id": int(
+        request.cookies.get("session_id")), "user": verified}
+    return templates.TemplateResponse('subjects.html', context=context)
+
+# Results Related Routes
+
+
+@app.get('/results')
+def results(request: Request, verified=Depends(verify_through_session_id)):
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+    context = {"request": request, "session_id": int(
+        request.cookies.get("session_id")), "user": verified}
+    return templates.TemplateResponse('results.html', context=context)
+
+# Examination Board Related Routes
+
+
+@app.get('/examination_board')
+def examination_board(request: Request, verified=Depends(verify_through_session_id)):
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+    context = {"request": request, "session_id": int(
+        request.cookies.get("session_id")), "user": verified}
+    return templates.TemplateResponse('examination_board.html', context=context)
