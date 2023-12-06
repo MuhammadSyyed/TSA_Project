@@ -3,25 +3,35 @@
 {% block main_title%}ADD USER
 {% endblock %}
 
-{% block main_cards %}
+{% block content %}
 <div class="form-container">
-
     <form onsubmit="signUp(event,'{{session_id}}')" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" placeholder="Enter Username" required>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" placeholder="Enter Password" required>
+        <div class="form-group">
+            <div class="combination"> <label for="username">Username:</label>
+                <input type="text" class="input-box" id="username" name="username" placeholder="Enter Username"
+                    required>
+            </div>
+            <div class="combination"> <label for="password">Password:</label>
+                <input type="password" class="input-box" id="password" name="password" placeholder="Enter Password"
+                    required>
+            </div>
+        </div>
 
-        <label for="role">Role:</label>
-        <select id="role" name="role">
-            <option value="admin">admin</option>
-            <option value="CI">CI</option>
-            <option value="COO">COO</option>
-            <option value="master">master</option>
-        </select>
-
-        <button type="submit">Add</button>
+        <div class="form-group">
+            <div class="combination">
+                <label for="role">Role:</label>
+                <select class="input-box" id="role" name="role">
+                    <option value="admin">admin</option>
+                    <option value="CI">CI</option>
+                    <option value="COO">COO</option>
+                    <option value="master">master</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="combination"><button type="submit">Add</button></div>
+        </div>
     </form>
 </div>
 {% endblock %}

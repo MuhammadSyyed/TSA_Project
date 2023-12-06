@@ -390,12 +390,12 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     margin-top: -10px;
-    width: 500px;
+    width: max-content;
     position: relative;
 }
 
 table {
-    width: 100%;
+    width: max-content;
     border-collapse: collapse;
 }
 
@@ -439,7 +439,6 @@ th {
 }
 
 .form-container {
-    width: 500px;
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
@@ -484,7 +483,22 @@ button:hover {
 }
 
 
+.combination {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
 
+
+.input-box {
+    width: 410px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 5px;
+}
 
 
 /* ---------- SCROLLBARS ---------- */

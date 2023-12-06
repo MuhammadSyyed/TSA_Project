@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block main_title%}CAMPUSES
+{% endblock %}
+
+{% block quickbutton %} <button onclick="gotoAddCampus('{{session_id}}')" class="quickbutton">+ Add Campus</button>{%
+endblock %}
+
+{% block main_cards %}
+
+<div class="user-card">
+
+    <table>
+        <thead>
+            <tr>
+                <th>Campus ID</th>
+                <th>Campus Name</th>
+                <th>Address</th>
+                <th>Incharge</th>
+                <th>Admin</th>
+                <th>COO</th>
+                <th>Head EB</th>
+                <th>Contact</th>
+                <th style="text-align: center;">Edit</th>
+                <th style="text-align: center;">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for usr in users %}
+            <tr>
+                <td>{{usr.id}}</td>
+                <td>{{usr.username}}</td>
+                <td>{{usr.role.value}}</td>
+                <td style="text-align: center;"><span onclick="editUser('{{usr.id}}','{{session_id}}')"
+                        class="edit-icon"></span>
+                </td>
+                <td style="text-align: center;"><span onclick="deleteUser('{{usr.id}}','{{session_id}}')"
+                        class="delete-icon"></span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

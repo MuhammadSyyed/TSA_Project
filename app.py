@@ -221,3 +221,28 @@ def students(request: Request, verified=Depends(verify_through_session_id)):
     context = {"request": request, "session_id": int(
         request.cookies.get("session_id")), "user": verified}
     return templates.TemplateResponse('students.html', context=context)
+
+# Campuses Related Routes
+
+
+@app.get('/campuses')
+def campuses(request: Request, verified=Depends(verify_through_session_id)):
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+    context = {"request": request, "session_id": int(
+        request.cookies.get("session_id")), "user": verified}
+    return templates.TemplateResponse('campuses.html', context=context)
+
+
+@app.get("/add_campus")
+def add_campus(request: Request, verified=Depends(verify_through_session_id)):
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+
+    context = {"request": request, "session_id": int(
+        request.cookies.get("session_id")), "user": verified}
+    return templates.TemplateResponse('add_campus.html', context=context)

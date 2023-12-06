@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block main_title%}ADD CAMPUS
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="form-container">
+
+    <form onsubmit="signUp(event,'{{session_id}}')" method="post">
+
+        <div class="form-group">
+            <div class="combination">
+                <label for="campus_name">Campus Name:</label>
+                <input type="text" class="input-box" id="campus_name" name="campus_name"
+                    placeholder="Enter Campus' Name" required>
+            </div>
+            <div class="combination">
+                <label for="address">Address:</label>
+                <input type="text" class="input-box" id="address" name="address" placeholder="Enter Campus' Address"
+                    required>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="combination"> <label for="incharge">Incharge:</label>
+                <input type="text" class="input-box" id="incharge" name="incharge" placeholder="Enter Incharge's Name"
+                    required>
+
+            </div>
+            <div class="combination">
+                <label for="admin">Admin:</label>
+                <input type="text" class="input-box" id="admin" name="admin" placeholder="Enter Admin's Name" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="combination"> <label for="coo">COO:</label>
+                <input type="text" class="input-box" id="coo" name="coo" placeholder="Enter COO's Name" required>
+            </div>
+            <div class="combination"> <label for="head_eb">Head EB:</label>
+                <input type="text" class="input-box" id="head_eb" name="head_eb" placeholder="Enter Head's Name"
+                    required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="combination"> <label for="contact">Contact:</label>
+                <input type="text" class="input-box" id="contact" name="contact" placeholder="Enter Contact No."
+                    required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="combination">
+                <button type="submit">Add Campus</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}

@@ -135,9 +135,15 @@ function sendMessage(message) {
 }
 
 function gotoAddUser(session_id) {
-    console.log("adding user")
+
     document.cookie = `session_id=${session_id};`;
     window.location.href = "/add_user";
+}
+
+function gotoAddCampus(session_id) {
+
+    document.cookie = `session_id=${session_id};`;
+    window.location.href = "/add_campus";
 }
 
 function signUp(event, session_id) {
@@ -216,17 +222,23 @@ function deleteUser(user_id, session_id) {
 
 }
 
-function gotoAddMarks(session_id){
+function gotoAddMarks(session_id) {
     console.log(session_id)
     document.cookie = `session_id=${session_id};`;
     window.location.href = "/add_marks";
 }
 
-
-function gotoStudents(session_id){
+function gotoStudents(session_id) {
     console.log(session_id)
     document.cookie = `session_id=${session_id};`;
     window.location.href = "/students";
+
+}
+
+function gotoCampuses(session_id) {
+    console.log(session_id)
+    document.cookie = `session_id=${session_id};`;
+    window.location.href = "/campuses";
 
 }
 // ---------- CHARTS ----------

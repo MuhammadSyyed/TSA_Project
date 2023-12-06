@@ -1,66 +1,44 @@
 {% extends "base.html" %}
 
-{% block main_title%}<p class="font-weight-bold">EDIT USER</p>{% endblock %}
+{% block main_title %}EDIT USER {% endblock %}
 
-{% block sidebarlist %}
-<li class="sidebar-list-item" onclick="gotoDashboard('{{session_id}}')">
-    <a>
-        <span class="material-icons-outlined">dashboard</span> Dashboard
-    </a>
-</li>
-<!--
-<li class="sidebar-list-item">
-    <a href="/">
-        <span class="material-icons-outlined">inventory_2</span> Products
-    </a>
-</li>
-<li class="sidebar-list-item">
-    <a href="/">
-        <span class="material-icons-outlined">fact_check</span> Inventory
-    </a>
-</li>
-<li class="sidebar-list-item">
-    <a href="/">
-        <span class="material-icons-outlined">add_shopping_cart</span> Purchase Orders
-    </a>
-</li>
-<li class="sidebar-list-item">
-    <a href="/">
-        <span class="material-icons-outlined">shopping_cart</span> Sales Orders
-    </a>
-</li>
-<li class="sidebar-list-item">
-    <a href="/">
-        <span class="material-icons-outlined">poll</span> Reports
-    </a>
-</li> -->
-<li class="sidebar-list-item" onclick="gotoUsers('{{session_id}}')">
-    <a>
-        <span class="material-icons-outlined">face</span> Users
-    </a>
-</li>
-{% endblock %}
+{% block content %}
 
-{% block main_cards %}
 <div class="form-container">
 
     <form onsubmit="updateUser(event,'{{session_id}}','{{user_to_edit.id}}')" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" value="{{user_to_edit.username}}" required>
+        <div class="form-group">
+            <div class="combination">
+                <label for="username">Username:</label>
+                <input type="text" class="input-box" id="username" name="username" value="{{user_to_edit.username}}"
+                    required>
 
-        <label for="password">Password:</label>
-        <input type="text" id="password" name="password" value="{{user_to_edit.password}}" required>
+            </div>
+            <div class="combination">
+                <label for="password">Password:</label>
+                <input type="text" class="input-box" id="password" name="password" value="{{user_to_edit.password}}"
+                    required>
+            </div>
 
-        <label for="role">Role:</label>
-        <select id="role" name="role">
-            <option value="{{user_to_edit.role.value}}" disabled selected>{{user_to_edit.role.value}}</option>
-            <option value="admin">admin</option>
-            <option value="CI">CI</option>
-            <option value="COO">COO</option>
-            <option value="master">master</option>
-        </select>
+        </div>
+        <div class="form-group">
+            <div class="combination"><label for="role">Role:</label>
+                <select class="input-box" id="role" name="role">
+                    <option value="{{user_to_edit.role.value}}" disabled selected>{{user_to_edit.role.value}}</option>
+                    <option value="admin">admin</option>
+                    <option value="CI">CI</option>
+                    <option value="COO">COO</option>
+                    <option value="master">master</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="combination"><button type="submit">Update</button></div>
+        </div>
 
-        <button type="submit">Update</button>
+
+
+
     </form>
 </div>
 {% endblock %}

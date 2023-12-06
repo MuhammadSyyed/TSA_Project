@@ -85,6 +85,11 @@
                         <span class="material-icons-outlined">content_paste</span> Examination
                     </a>
                 </li>
+                <li class="sidebar-list-item" onclick="gotoCampuses('{{session_id}}')">
+                    <a>
+                        <span class="material-icons-outlined">apartment</span> Campuses
+                    </a>
+                </li>
                 <!-- {% endblock %} -->
                 <li onclick="gotoLogin('{{session_id}}')" class="sidebar-list-item">
                     <a><span class="material-icons-outlined">logout</span>
@@ -99,7 +104,7 @@
         <!-- Main -->
         <main class="main-container">
             {% block content %}
-            
+
             {% endblock %}
 
             {% block quickbutton %}{% endblock%}
