@@ -395,7 +395,7 @@ body {
 }
 
 table {
-    width: max-content;
+    width: min-content;
     border-collapse: collapse;
 }
 

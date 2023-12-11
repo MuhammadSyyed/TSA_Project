@@ -25,15 +25,23 @@ endblock %}
             </tr>
         </thead>
         <tbody>
-            {% for usr in users %}
+            {% for campus in campuses %}
             <tr>
-                <td>{{usr.id}}</td>
-                <td>{{usr.username}}</td>
-                <td>{{usr.role.value}}</td>
-                <td style="text-align: center;"><span onclick="editUser('{{usr.id}}','{{session_id}}')"
+
+                <td>{{campus.campus_id}}</td>
+                <td>{{campus.campus_name}}</td>
+                <td>{{campus.address}}</td>
+                <td>{{campus.incharge}}</td>
+                <td>{{campus.admin}}</td>
+                <td>{{campus.coo}}</td>
+                <td>{{campus.head_eb}}</td>
+                <td>{{campus.contact_number}}</td>
+
+
+                <td style="text-align: center;"><span onclick="editCampus('{{campus.campus_id}}','{{session_id}}')"
                         class="edit-icon"></span>
                 </td>
-                <td style="text-align: center;"><span onclick="deleteUser('{{usr.id}}','{{session_id}}')"
+                <td style="text-align: center;"><span onclick="deleteCampus('{{campus.campus_id}}','{{session_id}}')"
                         class="delete-icon"></span>
                 </td>
             </tr>

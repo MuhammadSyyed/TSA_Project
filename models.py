@@ -41,15 +41,39 @@ class User(UserBase):
 class UserDelete(BaseModel):
     id: int
 
+
 class UserEdit(BaseModel):
     id: int
     username: str
     password: str
-    role : UserRole
+    role: UserRole
+
 
 class UserLogin(BaseModel):
     username: str
     password: str
+
+# Campus Related Models
+
+
+class CampusCreate(BaseModel):
+    campus_name: str
+    address: str
+    incharge: str
+    admin: str
+    coo: str
+    head_eb: str
+    contact_number: str
+
+
+class Campus(CampusCreate):
+    campus_id: int
+
+class CampusDelete(BaseModel):
+    campus_id:int
+
+
+# Student Related Models
 
 
 class StudentBase(BaseModel):

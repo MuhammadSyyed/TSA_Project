@@ -262,6 +262,116 @@ def get_student(student: Student):
                         'image': student["image"]}
         return Student(**student_data)
 
+# Campus Related Functions
+
+
+def add_new_campus(campus: CampusCreate):
+    try:
+
+        conn = sqlite3.connect(configs.db_file)
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO CAMPUS (CAMPUS_NAME,ADDRESS,CAMPUS_IN_CHARGE,ADMIN,COO,HEAD_EB,CONTACT_NUMBER) VALUES (?,?,?,?,?,?,?)',
+                       (campus.campus_name,
+                        campus.address,
+                        campus.incharge,
+                        campus.admin,
+                        campus.coo,
+                        campus.head_eb,
+                        campus.contact_number))
+        conn.commit()
+        conn.close()
+        return {"success": True, "message": "Campus added successfully"}
+    except sqlite3.IntegrityError:
+        conn.commit()
+        conn.close()
+        return {"success": False, "message": "Campus already exists"}
+
+
+def update_and_save_campus(campus: Campus):
+    try:
+        conn = sqlite3.connect(configs.db_file)
+        cursor = conn.cursor()
+        cursor.execute('UPDATE CAMPUS SET CAMPUS_NAME = ?, ADDRESS = ?, CAMPUS_IN_CHARGE = ?, ADMIN = ?,COO = ?, HEAD_EB = ?, CONTACT_NUMBER = ? WHERE CAMPUS_ID = ?',
+                       (
+                           campus.campus_name,
+                           campus.address,
+                           campus.incharge,
+                           campus.admin,
+                           campus.coo,
+                           campus.head_eb,
+                           campus.contact_number,
+                           campus.campus_id))
+        conn.commit()
+        conn.close()
+        return {"success": True, "message": "Campus updated successfully"}
+    except sqlite3.IntegrityError:
+        conn.commit()
+        conn.close()
+        return {"success": False, "message": "Campus Name already exists or the campus doesn't exist"}
+
+
+def get_all_campuses():
+    conn = sqlite3.connect(configs.db_file)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM CAMPUS')
+    all_campuses = cursor.fetchall()
+    conn.close()
+
+    if all_campuses:
+        all_campuses = [Campus(**{
+            "campus_id": campus['campus_id'],
+            "campus_name": campus['campus_name'],
+            "address": campus['address'],
+            "incharge": campus['campus_in_charge'],
+            "admin": campus['admin'],
+            "coo": campus['coo'],
+            "head_eb": campus['head_eb'],
+            "contact_number": campus['contact_number']
+
+        }) for campus in all_campuses]
+    return all_campuses
+
+
+def delete_one_campus(campus: CampusDelete):
+    try:
+        conn = sqlite3.connect(configs.db_file)
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM CAMPUS WHERE CAMPUS_ID = ?',
+                       (campus.campus_id,))
+        conn.commit()
+        conn.close()
+        if cursor.rowcount == 1:
+            return {"success": True, "message": "Campus deleted successfully"}
+        else:
+            return {"success": False, "message": "Campus not found"}
+    except sqlite3.Error as e:
+        return {"success": False, "message": "An error occurred while deleting the campus: " + str(e)}
+
+
+def get_one_campus(campus_id: int):
+    conn = sqlite3.connect(configs.db_file)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute(
+        'SELECT * FROM CAMPUS WHERE CAMPUS_ID = ?', (campus_id,))
+    campus = cursor.fetchone()
+    conn.close()
+
+    if campus:
+        campus_dtl = {
+            "campus_id": campus['campus_id'],
+            "campus_name": campus['campus_name'],
+            "address": campus['address'],
+            "incharge": campus['campus_in_charge'],
+            "admin": campus['admin'],
+            "coo": campus['coo'],
+            "head_eb": campus['head_eb'],
+            "contact_number": campus['contact_number']
+
+        }
+        return Campus(**campus_dtl)
+
 
 def main():
     conn = sqlite3.connect('SystemDB.db')

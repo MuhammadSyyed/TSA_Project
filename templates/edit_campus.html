@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block main_title%}EDIT CAMPUS
+{% endblock %}
+
+{% block content %}
+
+<div class="form-container">
+
+    <form onsubmit="updateCampus(event,'{{session_id}}','{{campus_to_edit.campus_id}}')" method="POST">
+
+        <div class="form-group">
+            <div class="combination">
+                <label for="campus_name">Campus Name:</label>
+                <input type="text" class="input-box" id="campus_name" name="campus_name"
+                    value="{{campus_to_edit.campus_name}}" required>
+            </div>
+            <div class="combination">
+                <label for="address">Address:</label>
+                <input type="text" class="input-box" id="address" name="address" value="{{campus_to_edit.address}}"
+                    required>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="combination"> <label for="incharge">Incharge:</label>
+                <input type="text" class="input-box" id="incharge" name="incharge" value="{{campus_to_edit.incharge}}"
+                    required>
+
+            </div>
+            <div class="combination">
+                <label for="admin">Admin:</label>
+                <input type="text" class="input-box" id="admin" name="admin" value="{{campus_to_edit.admin}}" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="combination"> <label for="coo">COO:</label>
+                <input type="text" class="input-box" id="coo" name="coo" value="{{campus_to_edit.coo}}" required>
+            </div>
+            <div class="combination"> <label for="head_eb">Head EB:</label>
+                <input type="text" class="input-box" id="head_eb" name="head_eb" value="{{campus_to_edit.head_eb}}"
+                    required>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="combination"> <label for="contact">Contact:</label>
+                <input type="text" class="input-box" id="contact" name="contact"
+                    value="{{campus_to_edit.contact_number}}" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="combination">
+                <button type="submit">Update Campus</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}

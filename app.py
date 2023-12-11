@@ -231,13 +231,15 @@ def campuses(request: Request, verified=Depends(verify_through_session_id)):
         context = {"request": request,
                    "message": "Unauthorized Access Denied!"}
         return templates.TemplateResponse('login.html', context=context)
+
+    campuses = get_all_campuses()
     context = {"request": request, "session_id": int(
-        request.cookies.get("session_id")), "user": verified}
+        request.cookies.get("session_id")), "user": verified, "campuses": campuses}
     return templates.TemplateResponse('campuses.html', context=context)
 
 
-@app.get("/add_campus")
-def add_campus(request: Request, verified=Depends(verify_through_session_id)):
+@app.get("/form_campus")
+def form_campus(request: Request, verified=Depends(verify_through_session_id)):
     if not verified:
         context = {"request": request,
                    "message": "Unauthorized Access Denied!"}
@@ -245,4 +247,46 @@ def add_campus(request: Request, verified=Depends(verify_through_session_id)):
 
     context = {"request": request, "session_id": int(
         request.cookies.get("session_id")), "user": verified}
-    return templates.TemplateResponse('add_campus.html', context=context)
+    return templates.TemplateResponse('form_campus.html', context=context)
+
+
+@app.post("/add_campus", response_model=dict)
+def add_campus(request: Request, campus: CampusCreate, verified=Depends(verify_through_session_id)):
+
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+    print(campus)
+    return add_new_campus(campus)
+
+
+@app.get("/edit_campus")
+def edit_campus(request: Request, campus_id: int, verified=Depends(verify_through_session_id)):
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+    campus_to_edit = get_one_campus(campus_id)
+
+    context = {"request": request, "session_id": int(
+        request.cookies.get("session_id")), "user": verified, 'campus_to_edit': campus_to_edit}
+    return templates.TemplateResponse('edit_campus.html', context=context)
+
+@app.post("/update_campus")
+def update_campus(request: Request, campus: Campus, verified=Depends(verify_through_session_id)):
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+    return update_and_save_campus(campus)
+
+
+@app.post("/delete_campus")
+def delete_campus(request: Request, campus: CampusDelete, verified=Depends(verify_through_session_id)):
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+    return delete_one_campus(campus)
+

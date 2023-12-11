@@ -68,7 +68,7 @@ function gotoExaminationBoard(session_id) {
 
 function editUser(user_id, session_id) {
     console.log(user_id);
-    var dtl = { id: user_id }
+
     fetch(`/edit_user?id=${user_id}`, {
         method: 'GET',
         headers: {
@@ -143,7 +143,7 @@ function gotoAddUser(session_id) {
 function gotoAddCampus(session_id) {
 
     document.cookie = `session_id=${session_id};`;
-    window.location.href = "/add_campus";
+    window.location.href = "/form_campus";
 }
 
 function signUp(event, session_id) {
@@ -240,6 +240,143 @@ function gotoCampuses(session_id) {
     document.cookie = `session_id=${session_id};`;
     window.location.href = "/campuses";
 
+}
+
+function addCampus(event, session_id) {
+
+    event.preventDefault(); // Prevents the default form submission behavior
+
+    var formData = {
+        campus_name: document.getElementById('campus_name').value,
+        address: document.getElementById('address').value,
+        incharge: document.getElementById('incharge').value,
+        admin: document.getElementById('admin').value,
+        coo: document.getElementById('coo').value,
+        head_eb: document.getElementById('head_eb').value,
+        contact_number: document.getElementById('contact').value,
+    };
+    console.log(formData)
+
+    fetch('/add_campus', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Cookie': 'session_id' + `${session_id}`,
+        },
+        body: JSON.stringify(formData),
+
+    }).then(response => response.json())  // This returns a promise
+        .then(data => {
+            console.log(data);
+            if (data.success) {
+                timedPopup("success", data.message, 'campuses', session_id);
+
+            } else {
+                timedPopup("warning", data.message, 'campuses', session_id);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+}
+
+function deleteCampus(campus_id, session_id) {
+    var formData = {
+        campus_id: campus_id
+    };
+    console.log(formData)
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            fetch('/delete_campus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cookie': 'session_id' + `${session_id}`,
+                },
+                body: JSON.stringify(formData),
+
+            }).then(response => response.json())  // This returns a promise
+                .then(data => {
+                    timedPopup("success", data.message, 'campuses', session_id);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+        }
+    });
+
+}
+
+function editCampus(campus_id, session_id) {
+
+    fetch(`/edit_campus?campus_id=${campus_id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Cookie': 'session_id' + `${session_id}`
+        }
+    })
+    document.cookie = `session_id=${session_id};`;
+    window.location.href = `/edit_campus?campus_id=${campus_id}`;
+
+}
+
+function updateCampus(event, session_id, campus_id) {
+
+    event.preventDefault(); 
+
+    var formData = {
+        campus_id: campus_id,
+        campus_name: document.getElementById('campus_name').value,
+        address: document.getElementById('address').value,
+        incharge: document.getElementById('incharge').value,
+        admin: document.getElementById('admin').value,
+        coo: document.getElementById('coo').value,
+        head_eb: document.getElementById('head_eb').value,
+        contact_number: document.getElementById('contact').value,
+    };
+    console.log(formData);
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, update it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            fetch('/update_campus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cookie': 'session_id' + `${session_id}`,
+                },
+                body: JSON.stringify(formData),
+
+            }).then(response => response.json())  // This returns a promise
+                .then(data => {
+                    timedPopup("success", data.message, 'campuses', session_id);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+        }
+    });
 }
 // ---------- CHARTS ----------
 
