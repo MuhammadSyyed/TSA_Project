@@ -372,6 +372,39 @@ def get_one_campus(campus_id: int):
         }
         return Campus(**campus_dtl)
 
+# Subject Related Functions
+
+def get_all_subjects():
+    conn = sqlite3.connect(configs.db_file)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM SUBJECTS')
+    all_subjects = cursor.fetchall()
+    conn.close()
+
+    if all_subjects:
+        all_subjects = [Subject(**{
+            "subject_id": subject['subject_id'],
+            "subject_name": subject['subject_name'],
+            "total_lecture_units":subject["total_lecture_units"]
+
+        }) for subject in all_subjects]
+    return all_subjects
+
+def add_new_subject(subject:SubjectCreate):
+    try:
+        conn = sqlite3.connect(configs.db_file)
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO SUBJECTS (SUBJECT_NAME, TOTAL_LECTURE_UNITS) VALUES (?, ?)',
+                       (subject.subject_name, subject.total_lecture_units))
+        conn.commit()
+        conn.close()
+        return {"success": True, "message": "Subject added successfully"}
+    except sqlite3.IntegrityError:
+        conn.commit()
+        conn.close()
+        return {"success": False, "message": "Subject already exists"}
+
 
 def main():
     conn = sqlite3.connect('SystemDB.db')

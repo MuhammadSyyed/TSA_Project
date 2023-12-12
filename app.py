@@ -169,9 +169,34 @@ def subjects(request: Request, verified=Depends(verify_through_session_id)):
         context = {"request": request,
                    "message": "Unauthorized Access Denied!"}
         return templates.TemplateResponse('login.html', context=context)
+
+    subjects = get_all_subjects()
+    print(subjects)
+
+    context = {"request": request, "session_id": int(
+        request.cookies.get("session_id")), "user": verified, "subjects": subjects}
+    return templates.TemplateResponse('subjects.html', context=context)
+
+
+@app.get('/form_subject')
+def form_subject(request: Request, verified=Depends(verify_through_session_id)):
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+
     context = {"request": request, "session_id": int(
         request.cookies.get("session_id")), "user": verified}
-    return templates.TemplateResponse('subjects.html', context=context)
+    return templates.TemplateResponse('form_subject.html', context=context)
+
+
+@app.post('/add_subject')
+def add_subject(request: Request, subject: SubjectCreate, verified=Depends(verify_through_session_id)):
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+    return add_new_subject(subject)
 
 # Results Related Routes
 
@@ -212,6 +237,7 @@ def add_mark(request: Request, verified=Depends(verify_through_session_id)):
 
 
 # Student Related Routes
+
 @app.get('/students')
 def students(request: Request, verified=Depends(verify_through_session_id)):
     if not verified:
@@ -222,8 +248,8 @@ def students(request: Request, verified=Depends(verify_through_session_id)):
         request.cookies.get("session_id")), "user": verified}
     return templates.TemplateResponse('students.html', context=context)
 
-# Campuses Related Routes
 
+# Campuses Related Routes
 
 @app.get('/campuses')
 def campuses(request: Request, verified=Depends(verify_through_session_id)):
@@ -273,6 +299,7 @@ def edit_campus(request: Request, campus_id: int, verified=Depends(verify_throug
         request.cookies.get("session_id")), "user": verified, 'campus_to_edit': campus_to_edit}
     return templates.TemplateResponse('edit_campus.html', context=context)
 
+
 @app.post("/update_campus")
 def update_campus(request: Request, campus: Campus, verified=Depends(verify_through_session_id)):
     if not verified:
@@ -289,4 +316,3 @@ def delete_campus(request: Request, campus: CampusDelete, verified=Depends(verif
                    "message": "Unauthorized Access Denied!"}
         return templates.TemplateResponse('login.html', context=context)
     return delete_one_campus(campus)
-

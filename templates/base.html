@@ -103,11 +103,12 @@
 
         <!-- Main -->
         <main class="main-container">
+            {% block quickbutton %}{% endblock%}
             {% block content %}
 
             {% endblock %}
 
-            {% block quickbutton %}{% endblock%}
+
             <div class="main-cards">{% block main_cards %}{% endblock %}</div>
             <div class="charts">{% block charts %}{% endblock %}</div>
         </main>

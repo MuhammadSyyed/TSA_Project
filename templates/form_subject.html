@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block main_title%}ADD SUBJECT
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <form onsubmit="addSubject(event,'{{session_id}}')" method="post">
+
+        <div class="form-group">
+            <div class="combination"> <label for="subject">Subject Name:</label>
+                <input type="text" class="input-box" id="subject" name="subject" placeholder="e.g Physics II, Math I"
+                    required>
+            </div>
+            <div class="combination"> <label for="lecture_units">Total Lecture Units:</label>
+                <input type="number" class="input-box" id="lecture_units" name="lecture_units" step="10"
+                    placeholder="Lectures Units" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="combination"><button type="submit">Add</button></div>
+        </div>
+    </form>
+</div>
+{% endblock %}

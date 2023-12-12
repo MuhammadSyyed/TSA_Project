@@ -140,6 +140,11 @@ function gotoAddUser(session_id) {
     window.location.href = "/add_user";
 }
 
+function gotoAddSubject(session_id) {
+    document.cookie = `session_id=${session_id};`;
+    window.location.href = "/form_subject";
+}
+
 function gotoAddCampus(session_id) {
 
     document.cookie = `session_id=${session_id};`;
@@ -172,6 +177,39 @@ function signUp(event, session_id) {
 
             } else {
                 timedPopup("warning", data.message, 'users', session_id);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+}
+
+function addSubject(event, session_id) {
+    event.preventDefault(); // Prevents the default form submission behavior
+
+    var formData = {
+        subject_name: document.getElementById('subject').value,
+        total_lecture_units: document.getElementById('lecture_units').value
+    };
+    console.log(formData)
+
+    fetch('/add_subject', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Cookie': 'session_id' + `${session_id}`,
+        },
+        body: JSON.stringify(formData),
+
+    }).then(response => response.json())  // This returns a promise
+        .then(data => {
+            console.log(data);
+            if (data.success) {
+                timedPopup("success", data.message, 'subjects', session_id);
+
+            } else {
+                timedPopup("warning", data.message, 'subjects', session_id);
             }
         })
         .catch(error => {
@@ -335,7 +373,7 @@ function editCampus(campus_id, session_id) {
 
 function updateCampus(event, session_id, campus_id) {
 
-    event.preventDefault(); 
+    event.preventDefault();
 
     var formData = {
         campus_id: campus_id,

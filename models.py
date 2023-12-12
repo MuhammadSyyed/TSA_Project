@@ -91,3 +91,12 @@ class Student(StudentBase):
 
 class UpdateStudent(StudentBase):
     STUDENT_ID: int
+
+
+# Subject Related Models
+class SubjectCreate(BaseModel):
+    subject_name: str
+    total_lecture_units:int
+
+class Subject(SubjectCreate):
+    subject_id:int

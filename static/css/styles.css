@@ -241,7 +241,7 @@ body {
 
 .buttoncard {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     justify-content: space-around;
     padding: 25px;
     background-color: #ffffff;
@@ -254,6 +254,7 @@ body {
     position: relative;
     width: 300px;
     height: 200px;
+    margin: 8px;
 }
 
 .buttoncard::before {
