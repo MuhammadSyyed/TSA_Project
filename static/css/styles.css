@@ -249,7 +249,7 @@ body {
     border: 1px solid #d2d2d3;
     border-radius: 5px;
     color: white;
-    box-shadow: 0 6px 7px -4px rgba(0, 0, 0.2, 0.7);
+
 
     position: relative;
     width: 300px;
@@ -272,6 +272,7 @@ body {
 
     border-width: 2px;
     border-color: rgb(255, 255, 255);
+    box-shadow: 0 6px 7px -4px rgba(0, 0, 0.2, 0.7);
 }
 
 

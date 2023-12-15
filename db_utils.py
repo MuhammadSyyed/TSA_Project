@@ -374,6 +374,7 @@ def get_one_campus(campus_id: int):
 
 # Subject Related Functions
 
+
 def get_all_subjects():
     conn = sqlite3.connect(configs.db_file)
     conn.row_factory = sqlite3.Row
@@ -386,12 +387,13 @@ def get_all_subjects():
         all_subjects = [Subject(**{
             "subject_id": subject['subject_id'],
             "subject_name": subject['subject_name'],
-            "total_lecture_units":subject["total_lecture_units"]
+            "total_lecture_units": subject["total_lecture_units"]
 
         }) for subject in all_subjects]
     return all_subjects
 
-def add_new_subject(subject:SubjectCreate):
+
+def add_new_subject(subject: SubjectCreate):
     try:
         conn = sqlite3.connect(configs.db_file)
         cursor = conn.cursor()
@@ -404,6 +406,44 @@ def add_new_subject(subject:SubjectCreate):
         conn.commit()
         conn.close()
         return {"success": False, "message": "Subject already exists"}
+
+
+def get_one_subject(subject_id: int):
+    conn = sqlite3.connect(configs.db_file)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute(
+        'SELECT * FROM SUBJECTS WHERE SUBJECT_ID = ?', (subject_id,))
+    subject = cursor.fetchone()
+    conn.close()
+
+    if subject:
+        subject_dtl = {
+            "subject_id": subject['subject_id'],
+            "subject_name": subject['subject_name'],
+            "total_lecture_units": subject['total_lecture_units']
+        }
+        return Subject(**subject_dtl)
+
+
+def update_and_save_subject(subject: Subject):
+    try:
+        conn = sqlite3.connect(configs.db_file)
+        cursor = conn.cursor()
+        cursor.execute('UPDATE SUBJECTS SET SUBJECT_NAME = ?, TOTAL_LECTURE_UNITS = ? WHERE SUBJECT_ID = ?',
+                       (
+                           subject.subject_name,
+                           subject.total_lecture_units,
+                           subject.subject_id
+                       ))
+
+        return {"success": True, "message": "Subject updated successfully"}
+    except sqlite3.IntegrityError:
+
+        return {"success": False, "message": "Subject Name already exists or the subject doesn't exist"}
+    finally:
+        conn.commit()
+        conn.close()
 
 
 def main():

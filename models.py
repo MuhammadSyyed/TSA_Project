@@ -69,8 +69,9 @@ class CampusCreate(BaseModel):
 class Campus(CampusCreate):
     campus_id: int
 
+
 class CampusDelete(BaseModel):
-    campus_id:int
+    campus_id: int
 
 
 # Student Related Models
@@ -96,7 +97,8 @@ class UpdateStudent(StudentBase):
 # Subject Related Models
 class SubjectCreate(BaseModel):
     subject_name: str
-    total_lecture_units:int
+    total_lecture_units: int
+
 
 class Subject(SubjectCreate):
-    subject_id:int
+    subject_id: int

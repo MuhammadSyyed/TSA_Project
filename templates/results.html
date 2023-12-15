@@ -1,3 +1,16 @@
 {% extends 'base.html' %}
 {% block main_title%}RESULTS
 {% endblock %}
+
+
+{% block charts %}
+<div class="charts-card">
+    <p class="chart-title">Top 5 Products</p>
+    <div id="bar-chart"></div>
+</div>
+
+<div class="charts-card">
+    <p class="chart-title">Purchase and Sales Orders</p>
+    <div id="area-chart"></div>
+</div>
+{% endblock %}

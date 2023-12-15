@@ -198,6 +198,27 @@ def add_subject(request: Request, subject: SubjectCreate, verified=Depends(verif
         return templates.TemplateResponse('login.html', context=context)
     return add_new_subject(subject)
 
+
+@app.get('/edit_subject')
+def edit_subject(request: Request, subject_id: int, verified=Depends(verify_through_session_id)):
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+    subject_to_edit = get_one_subject(subject_id)
+    context = {"request": request, "session_id": int(
+        request.cookies.get("session_id")), "user": verified, 'subject_to_edit': subject_to_edit}
+    return templates.TemplateResponse('edit_subject.html', context=context)
+
+
+@app.post('/update_subject')
+def update_subject(request: Request, subject: Subject, verified=Depends(verify_through_session_id)):
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+    return update_and_save_subject(subject)
+
 # Results Related Routes
 
 

@@ -415,7 +415,66 @@ function updateCampus(event, session_id, campus_id) {
 
         }
     });
+
 }
+
+
+function gotoEditSubject(subject_id, session_id) {
+    console.log(session_id, subject_id);
+    fetch(`/edit_subject?subject_id=${subject_id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Cookie': 'session_id' + `${session_id}`
+        }
+    })
+    document.cookie = `session_id=${session_id};`;
+    window.location.href = `/edit_subject?subject_id=${subject_id}`;
+
+}
+
+function updateSubject(event, session_id, subject_id) {
+
+    event.preventDefault();
+
+    var formData = {
+        subject_id: subject_id,
+        subject_name: document.getElementById('subject').value,
+        total_lecture_units: document.getElementById('lecture_units').value
+    };
+    console.log(formData);
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, update it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            fetch('/update_subject', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cookie': 'session_id' + `${session_id}`,
+                },
+                body: JSON.stringify(formData),
+
+            }).then(response => response.json())  // This returns a promise
+                .then(data => {
+                    timedPopup("success", data.message, 'subjects', session_id);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+        }
+    });
+
+}
+
 // ---------- CHARTS ----------
 
 // BAR CHART
