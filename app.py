@@ -270,7 +270,18 @@ def students(request: Request, verified=Depends(verify_through_session_id)):
     return templates.TemplateResponse('students.html', context=context)
 
 
+@app.get('/form_student')
+def form_student(request: Request, verified=Depends(verify_through_session_id)):
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+    context = {"request": request, "session_id": int(
+        request.cookies.get("session_id")), "user": verified}
+    return templates.TemplateResponse('form_student.html', context=context)
+
 # Campuses Related Routes
+
 
 @app.get('/campuses')
 def campuses(request: Request, verified=Depends(verify_through_session_id)):
@@ -337,3 +348,17 @@ def delete_campus(request: Request, campus: CampusDelete, verified=Depends(verif
                    "message": "Unauthorized Access Denied!"}
         return templates.TemplateResponse('login.html', context=context)
     return delete_one_campus(campus)
+
+
+# Admission Related Routes
+
+@app.get("/admissions")
+def admissions(request: Request, verified=Depends(verify_through_session_id)):
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+
+    context = {"request": request, "session_id": int(
+        request.cookies.get("session_id")), "user": verified}
+    return templates.TemplateResponse('admissions.html', context=context)

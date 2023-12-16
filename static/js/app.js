@@ -2,6 +2,32 @@
 let sidebarOpen = false;
 const sidebar = document.getElementById('sidebar');
 
+function showUploadedImage(event) {
+    var input = event.target;
+    var preview = document.getElementById('previewImage');
+    var reader = new FileReader();
+
+    reader.onload = function () {
+        preview.style.backgroundImage = 'url(' + reader.result + ')';
+    };
+
+    if (input.files && input.files[0]) {
+        reader.readAsDataURL(input.files[0]);
+    }
+
+    document.getElementById('previewImage').hidden = false;
+    document.getElementById('cross').hidden = false;
+    document.getElementById('avatar').hidden = true;
+}
+
+function resetImage() {
+    document.getElementById('image').value = '';
+    document.getElementById('previewImage').hidden = true;
+    document.getElementById('avatar').hidden = false;
+    document.getElementById('cross').hidden = true;
+
+}
+
 function timedPopup(type, message, goto, session_id) {
     let timerInterval;
     Swal.fire({
@@ -475,6 +501,17 @@ function updateSubject(event, session_id, subject_id) {
 
 }
 
+function gotoAdmissions(session_id) {
+    console.log(session_id)
+    document.cookie = `session_id=${session_id};`;
+    window.location.href = "/admissions";
+}
+
+function gotoAddStudent(session_id) {
+    console.log(session_id)
+    document.cookie = `session_id=${session_id};`;
+    window.location.href = "/form_student";
+}
 // ---------- CHARTS ----------
 
 // BAR CHART

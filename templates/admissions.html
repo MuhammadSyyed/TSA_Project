@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block main_title %} Admissions {% endblock %}
+
+{% block content %}
+<div style="display: flex;flex-direction: row;flex-wrap: wrap;min-width: 144vh;">
+    <div onclick="gotoAddStudent('{{session_id}}')"
+        style="background: url('../static/images/add_marks.png') no-repeat center;background-size: cover;min-height: 10vh;"
+        class="buttoncard">
+        <strong><label class="bottom-right-text">Add Student</label></strong>
+    </div>
+</div>
+{% endblock %}

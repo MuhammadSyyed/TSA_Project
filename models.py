@@ -2,6 +2,8 @@ from pydantic import BaseModel
 from enum import Enum
 from datetime import date
 
+# Session Related Model
+
 
 class SessionCreate(BaseModel):
     user_id: int
@@ -12,6 +14,8 @@ class SessionCreate(BaseModel):
 
 class Session(SessionCreate):
     session_id: int
+
+# User Related Model
 
 
 class UserRole(str, Enum):
@@ -73,9 +77,7 @@ class Campus(CampusCreate):
 class CampusDelete(BaseModel):
     campus_id: int
 
-
 # Student Related Models
-
 
 class StudentBase(BaseModel):
     campus_id: int
@@ -85,20 +87,14 @@ class StudentBase(BaseModel):
     date_joined: date
     image: bytes
 
-
 class Student(StudentBase):
     student_id: int
 
-
-class UpdateStudent(StudentBase):
-    STUDENT_ID: int
-
-
 # Subject Related Models
+    
 class SubjectCreate(BaseModel):
     subject_name: str
     total_lecture_units: int
-
 
 class Subject(SubjectCreate):
     subject_id: int

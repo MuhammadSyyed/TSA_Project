@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block main_title%}ADD STUDENT
+{% endblock %}
+
+{% block content %}
+
+<div class="form-container">
+
+    <form onsubmit="addStudent(event,'{{session_id}}')" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <div class="combination">
+                <div id="avatar">
+                </div>
+                <div id="previewImage" hidden>
+                    <p id="cross" onclick="resetImage()" class="remove-btn">&#10006;</p>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="combination">
+                <input style="border: none;" type="file" id="image" name="image" accept="image/*" required
+                    onchange="showUploadedImage(event)">
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="combination">
+                <label for="student_name">Student Name:</label>
+                <input type="text" class="input-box" id="student_name" name="student_name"
+                    placeholder="Enter Student' Name" required>
+            </div>
+            <div class="form-group">
+                <div class="combination">
+                    <label for="role">Campus:</label>
+                    <select class="input-box" id="role" name="role">
+                        <option value="admin">Campus I</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="combination">
+                <label for="roll_no">Roll Number:</label>
+                <input type="text" class="input-box" id="roll_no" name="roll_no" placeholder="Enter Roll Number"
+                    required>
+            </div>
+            <div class="combination">
+                <label for="batch">Batch:</label>
+                <input type="text" class="input-box" id="batch" name="batch" placeholder="Enter Batch" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="combination"> <label for="date_joined">Date:</label>
+                <input type="date" class="input-box" id="date_joined" name="date_joined" required>
+            </div>
+            <div class="combination"> <label for="parent_contact">Parent's Contact:</label>
+                <input type="text" class="input-box" id="parent_contact" name="parent_contact"
+                    placeholder="Enter Contact No." required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="combination">
+                <button type="submit">Add Student</button>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

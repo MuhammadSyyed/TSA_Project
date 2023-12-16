@@ -229,7 +229,7 @@ def add_student(student: Student):
         return {"success": False, "message": "Student already exists"}
 
 
-def update_student(student: UpdateStudent):
+def update_student(student: Student):
     try:
         conn = sqlite3.connect(configs.db_file)
         cursor = conn.cursor()
