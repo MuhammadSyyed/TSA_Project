@@ -2,13 +2,18 @@
 
 {% block main_title%}ADD STUDENT
 {% endblock %}
+{% block quickbutton %}
+<button style="margin: 0px 0px 10px 5px; background-color: rgb(249, 151, 151);color: rgb(255, 255, 255);"
+    onclick="alert('Working on it')" class="quickbutton">+ Import Excel File</button>
 
+{% endblock %}
 {% block content %}
 
 <div class="form-container">
 
+
     <form onsubmit="addStudent(event,'{{session_id}}')" method="post" enctype="multipart/form-data">
-        <div class="form-group">
+        <!-- <div class="form-group">
             <div class="combination">
                 <div id="avatar">
                 </div>
@@ -16,13 +21,13 @@
                     <p id="cross" onclick="resetImage()" class="remove-btn">&#10006;</p>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
+        </div> -->
+        <!-- <div class="form-group">
             <div class="combination">
                 <input style="border: none;" type="file" id="image" name="image" accept="image/*" required
                     onchange="showUploadedImage(event)">
             </div>
-        </div>
+        </div> -->
 
 
         <div class="form-group">
@@ -33,28 +38,21 @@
             </div>
             <div class="form-group">
                 <div class="combination">
-                    <label for="role">Campus:</label>
-                    <select class="input-box" id="role" name="role">
-                        <option value="admin">Campus I</option>
+                    <label for="campus_id">Campus:</label>
+                    <select class="input-box" id="campus_id" name="campus_id">
+                        {% for campus in campuses %}
+                        <option value="{{campus.campus_id}}">{{campus.campus_name}}</option>
+                        {% endfor %}
                     </select>
                 </div>
             </div>
         </div>
         <div class="form-group">
-            <div class="combination">
-                <label for="roll_no">Roll Number:</label>
-                <input type="text" class="input-box" id="roll_no" name="roll_no" placeholder="Enter Roll Number"
-                    required>
-            </div>
-            <div class="combination">
-                <label for="batch">Batch:</label>
-                <input type="text" class="input-box" id="batch" name="batch" placeholder="Enter Batch" required>
-            </div>
-        </div>
 
-        <div class="form-group">
-            <div class="combination"> <label for="date_joined">Date:</label>
-                <input type="date" class="input-box" id="date_joined" name="date_joined" required>
+            <div class="combination">
+                <label for="parent_name">Parent's Name:</label>
+                <input type="text" class="input-box" id="parent_name" name="parent_name" placeholder="Enter Parent Name"
+                    required>
             </div>
             <div class="combination"> <label for="parent_contact">Parent's Contact:</label>
                 <input type="text" class="input-box" id="parent_contact" name="parent_contact"
@@ -64,8 +62,55 @@
 
         <div class="form-group">
             <div class="combination">
+                <label for="group">Group:</label>
+                <select class="input-box" id="group" name="group">
+
+                    <option value="Pre-Engineering" selected>Pre-Engineering</option>
+                    <option value="Biology">Biology</option>
+                    <option value="Computer-Science">Computer-Science</option>
+
+                </select>
+            </div>
+            <div class="combination">
+                <label for="roll_no">Roll Number:</label>
+                <input type="text" class="input-box" id="roll_no" name="roll_no" placeholder="Enter Roll Number"
+                    required>
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+            <div class="combination">
+                <label for="batch">Batch:</label>
+                <input type="text" class="input-box" id="batch" name="batch" placeholder="Enter Batch" required>
+            </div>
+            <div class="combination">
+                <label for="date_joined">Joining Date:</label>
+                <input type="date" class="input-box" id="date_joined" name="date_joined" required>
+            </div>
+
+
+        </div>
+
+        <div class="form-group">
+            <div class="combination">
+                <label for="reference">Reference:</label>
+                <input type="text" class="input-box" id="reference" name="reference" placeholder="Reference" required>
+            </div>
+            <div class="combination">
+                <label for="percentage">Percentage (Last Class):</label>
+                <input type="text" class="input-box" id="percentage" name="percentage" placeholder="Percentage"
+                    required>
+            </div>
+
+
+        </div>
+        <div class="form-group">
+            <div class="combination">
                 <button type="submit">Add Student</button>
             </div>
+
         </div>
 
     </form>

@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from enum import Enum
 from datetime import date
+from fastapi import File, UploadFile
 
 # Session Related Model
 
@@ -79,22 +80,30 @@ class CampusDelete(BaseModel):
 
 # Student Related Models
 
-class StudentBase(BaseModel):
+
+class StudentCreate(BaseModel):
+    student_name: str
     campus_id: int
-    name: str
     roll_no: str
     batch: str
     date_joined: date
-    image: bytes
+    parent_name: str
+    parent_contact: str
+    group: str
+    last_class_percentage: str
+    reference: str
 
-class Student(StudentBase):
+
+class Student(StudentCreate):
     student_id: int
 
 # Subject Related Models
-    
+
+
 class SubjectCreate(BaseModel):
     subject_name: str
     total_lecture_units: int
+
 
 class Subject(SubjectCreate):
     subject_id: int

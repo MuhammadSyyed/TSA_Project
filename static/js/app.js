@@ -512,6 +512,52 @@ function gotoAddStudent(session_id) {
     document.cookie = `session_id=${session_id};`;
     window.location.href = "/form_student";
 }
+
+function addStudent(event, session_id) {
+    event.preventDefault();
+
+    var formData = {
+        student_name: document.getElementById('student_name').value,
+        campus_id: document.getElementById('campus_id').value,
+        roll_no: document.getElementById('roll_no').value,
+        batch: document.getElementById('batch').value,
+        date_joined: document.getElementById('date_joined').value,
+        parent_name: document.getElementById('parent_name').value,
+        parent_contact: document.getElementById('parent_contact').value,
+        group: document.getElementById('group').value,
+        last_class_percentage: document.getElementById('percentage').value,
+        reference: document.getElementById('reference').value
+    };
+
+    console.log(formData);
+
+
+    alert('Hello');
+
+
+    fetch('/add_student', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Cookie': 'session_id' + `${session_id}`,
+        },
+        body: JSON.stringify(formData),
+
+    }).then(response => response.json())  // This returns a promise
+
+        .then(data => {
+            console.log(data);
+            if (data.success) {
+                timedPopup("success", data.message, 'students', session_id);
+
+            } else {
+                timedPopup("warning", data.message, 'students', session_id);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
 // ---------- CHARTS ----------
 
 // BAR CHART

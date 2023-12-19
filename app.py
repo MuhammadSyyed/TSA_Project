@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Depends, Request, status, Form, Query, Body
+from fastapi import FastAPI, HTTPException, Depends, Request, status, Form, Query, Body, File
 from fastapi.templating import Jinja2Templates
 from db_utils import *
 import models as model
@@ -9,6 +9,7 @@ from datetime import datetime
 templates = Jinja2Templates(directory="templates")
 
 app = FastAPI()
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
@@ -276,9 +277,24 @@ def form_student(request: Request, verified=Depends(verify_through_session_id)):
         context = {"request": request,
                    "message": "Unauthorized Access Denied!"}
         return templates.TemplateResponse('login.html', context=context)
+    all_campuses = get_all_campuses()
     context = {"request": request, "session_id": int(
-        request.cookies.get("session_id")), "user": verified}
+        request.cookies.get("session_id")), "user": verified, "campuses": all_campuses}
     return templates.TemplateResponse('form_student.html', context=context)
+
+
+@app.post('/add_student')
+def add_student(request: Request, student: StudentCreate, verified=Depends(verify_through_session_id)):
+
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+
+    print(student)
+
+    # return add_new_campus(student)
+    return {"message": "student added succesfully"}
 
 # Campuses Related Routes
 
