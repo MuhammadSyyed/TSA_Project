@@ -206,19 +206,24 @@ def delete_one_user(user: UserDelete):
 # Students Related Functions
 
 
-def add_student(student: Student):
+def add_new_student(student: Student):
     try:
         conn = sqlite3.connect(configs.db_file)
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO STUDENTS (CAMPUS_ID, NAME, ROLL_NO, BATCH, DATE_JOINED, IMAGE) "
-            "VALUES (?, ?, ?, ?, ?, ?)",
-            (student.campus_id,
-             student.name,
+            "INSERT INTO STUDENTS (STUDENT_NAME, CAMPUS_ID, ROLL_NO, BATCH, DATE_JOINED, PARENT_NAME,PARENT_CONTACT_NUMBER,'GROUP',LAST_CLASS_PERCENTAGE,REFERENCE) "
+            "VALUES (?,?,?,?,?,?,?,?,?,?)",
+
+            (student.student_name,
+             student.campus_id,
              student.roll_no,
              student.batch,
              student.date_joined,
-             student.image
+             student.parent_name,
+             student.parent_contact,
+             student.group,
+             student.last_class_percentage,
+             student.reference
              ))
         conn.commit()
         conn.close()
@@ -261,6 +266,32 @@ def get_student(student: Student):
                         'date_joined': student["date_joined"],
                         'image': student["image"]}
         return Student(**student_data)
+
+
+def get_all_students():
+    conn = sqlite3.connect(configs.db_file)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM STUDENTS')
+    all_students = cursor.fetchall()
+    conn.close()
+
+    if all_students:
+        all_students = [Student(**{
+            "student_id": student["student_id"],
+            "student_name": student["student_name"],
+            "campus_id": student["campus_id"],
+            "roll_no": student["roll_no"],
+            "batch": student["batch"],
+            "date_joined": student["date_joined"],
+            "parent_name": student["parent_name"],
+            "parent_contact": student["parent_contact_number"],
+            "group": student["group"],
+            "last_class_percentage": student["last_class_percentage"],
+            "reference": student["reference"]
+
+        }) for student in all_students]
+    return all_students
 
 # Campus Related Functions
 

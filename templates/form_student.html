@@ -3,16 +3,31 @@
 {% block main_title%}ADD STUDENT
 {% endblock %}
 {% block quickbutton %}
-<button style="margin: 0px 0px 10px 5px; background-color: rgb(249, 151, 151);color: rgb(255, 255, 255);"
-    onclick="alert('Working on it')" class="quickbutton">+ Import Excel File</button>
+<button id="toggleFormbutton"
+    style="margin: 0px 0px 10px 5px; background-color: rgb(249, 151, 151);color: rgb(255, 255, 255);"
+    onclick="togglestudentform()" class="quickbutton">+ Import Excel File</button>
 
 {% endblock %}
 {% block content %}
 
 <div class="form-container">
 
+    <form onsubmit="uploadStudentsFile('{{session_id}}')" id="uploadStudentsheet" enctype="multipart/form-data" hidden>
 
-    <form onsubmit="addStudent(event,'{{session_id}}')" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <div class="combination">
+                <label for="fileInput" class="file-label">Choose File</label>
+                <input style="border: none;" type="file" id="fileInput" name="xlsxfile" accept=".xls, .xlsx" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="combination">
+                <button type="submit">Add</button>
+            </div>
+        </div>
+    </form>
+
+    <form id="studentForm" onsubmit="addStudent(event,'{{session_id}}')" enctype="multipart/form-data">
         <!-- <div class="form-group">
             <div class="combination">
                 <div id="avatar">
@@ -28,7 +43,6 @@
                     onchange="showUploadedImage(event)">
             </div>
         </div> -->
-
 
         <div class="form-group">
             <div class="combination">
@@ -112,6 +126,7 @@
             </div>
 
         </div>
+
 
     </form>
 

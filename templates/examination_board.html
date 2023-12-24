@@ -3,8 +3,12 @@
 {% endblock %}
 
 {% block main_cards %}
-<div onclick="gotoAddMarks('{{session_id}}')"  style="background: url('../static/images/add_marks.png') no-repeat center;background-size: cover;min-height: 10vh;" class="buttoncard">
-        <strong><label class="bottom-right-text">ADD SUBJECT MARKS</label></strong>
+<div style="display: flex;flex-direction: row;flex-wrap: wrap;min-width: 144vh;">
+        <div onclick="gotoAddMarks('{{session_id}}')"
+                style="background: url('../static/images/add_marks.png') no-repeat center;background-size: cover;min-height: 10vh;"
+                class="buttoncard">
+                <strong><label class="bottom-right-text">ADD SUBJECT MARKS</label></strong>
+        </div>
 </div>
 
 {% endblock %}

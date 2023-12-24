@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Depends, Request, status, Form, Query, Body, File
+from fastapi import FastAPI, HTTPException, Depends, Request, status, Form, Query, Body, File, UploadFile
 from fastapi.templating import Jinja2Templates
 from db_utils import *
 import models as model
@@ -6,6 +6,7 @@ from fastapi.staticfiles import StaticFiles
 import random
 import json
 from datetime import datetime
+import pandas as pd
 templates = Jinja2Templates(directory="templates")
 
 app = FastAPI()
@@ -266,8 +267,9 @@ def students(request: Request, verified=Depends(verify_through_session_id)):
         context = {"request": request,
                    "message": "Unauthorized Access Denied!"}
         return templates.TemplateResponse('login.html', context=context)
+    all_students = get_all_students()
     context = {"request": request, "session_id": int(
-        request.cookies.get("session_id")), "user": verified}
+        request.cookies.get("session_id")), "user": verified, "students": all_students}
     return templates.TemplateResponse('students.html', context=context)
 
 
@@ -285,16 +287,19 @@ def form_student(request: Request, verified=Depends(verify_through_session_id)):
 
 @app.post('/add_student')
 def add_student(request: Request, student: StudentCreate, verified=Depends(verify_through_session_id)):
-
     if not verified:
         context = {"request": request,
                    "message": "Unauthorized Access Denied!"}
         return templates.TemplateResponse('login.html', context=context)
 
-    print(student)
+    return add_new_student(student)
 
-    # return add_new_campus(student)
-    return {"message": "student added succesfully"}
+
+@app.post('/add_students_via_sheet')
+def add_students_via_sheet(request: Request, xlsxfile: UploadFile = File(...), verified=Depends(verify_through_session_id)):
+    df = pd.read_excel(xlsxfile.file)
+    print(df)
+    return {"success": True, "message": "File Uploaded Successfully"}
 
 # Campuses Related Routes
 

@@ -1,6 +1,20 @@
 
 let sidebarOpen = false;
 const sidebar = document.getElementById('sidebar');
+function togglestudentform() {
+
+    if (document.getElementById('uploadStudentsheet').hidden) {
+
+        document.getElementById('studentForm').hidden = true;
+        document.getElementById('uploadStudentsheet').hidden = false;
+        document.getElementById('toggleFormbutton').innerText = "+ Add One Student";
+    } else {
+        document.getElementById('studentForm').hidden = false;
+        document.getElementById('uploadStudentsheet').hidden = true;
+        document.getElementById('toggleFormbutton').innerText = "+ Import Excel File";
+    }
+
+}
 
 function showUploadedImage(event) {
     var input = event.target;
@@ -532,9 +546,6 @@ function addStudent(event, session_id) {
     console.log(formData);
 
 
-    alert('Hello');
-
-
     fetch('/add_student', {
         method: 'POST',
         headers: {
@@ -557,6 +568,36 @@ function addStudent(event, session_id) {
         .catch(error => {
             console.error('Error:', error);
         });
+}
+
+function uploadStudentsFile(session_id) {
+
+    var fileInput = document.getElementById('fileInput');
+    if (fileInput.files.length > 0) {
+        var formData = new FormData();
+        formData.append('xlsxfile', fileInput.files[0]);
+        fetch('/add_students_via_sheet', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Cookie': 'session_id' + `${session_id}`,
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+
+            });
+
+
+    }
+    else {
+        alert('Please select a file.');
+    }
 }
 // ---------- CHARTS ----------
 

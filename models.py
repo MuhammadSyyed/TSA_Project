@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 from enum import Enum
 from datetime import date
-from fastapi import File, UploadFile
 
 # Session Related Model
 
