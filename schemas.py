@@ -18,7 +18,7 @@ student_schema = '''
         PARENT_NAME TEXT NOT NULL,
         PARENT_CONTACT_NUMBER TEXT NOT NULL,
         'GROUP' TEXT NOT NULL,
-        LAST_CLASS_PERCENTAGE TEXT,
+        LAST_CLASS_PERCENTAGE REAL,
         REFERENCE TEXT
         )
     '''

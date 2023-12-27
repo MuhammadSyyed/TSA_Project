@@ -89,7 +89,7 @@ class StudentCreate(BaseModel):
     parent_name: str
     parent_contact: str
     group: str
-    last_class_percentage: str
+    last_class_percentage: float
     reference: str
 
 

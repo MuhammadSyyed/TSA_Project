@@ -458,7 +458,6 @@ function updateCampus(event, session_id, campus_id) {
 
 }
 
-
 function gotoEditSubject(subject_id, session_id) {
     console.log(session_id, subject_id);
     fetch(`/edit_subject?subject_id=${subject_id}`, {

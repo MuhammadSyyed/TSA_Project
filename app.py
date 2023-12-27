@@ -298,7 +298,20 @@ def add_student(request: Request, student: StudentCreate, verified=Depends(verif
 @app.post('/add_students_via_sheet')
 def add_students_via_sheet(request: Request, xlsxfile: UploadFile = File(...), verified=Depends(verify_through_session_id)):
     df = pd.read_excel(xlsxfile.file)
-    print(df)
+    for _, row in df.iterrows():
+
+        new_student = StudentCreate(student_name=row.iloc[0],
+                                    campus_id=row.iloc[1],
+                                    roll_no=row.iloc[5],
+                                    batch=row.iloc[6],
+                                    date_joined=row.iloc[7],
+                                    parent_name=row.iloc[2],
+                                    parent_contact=row.iloc[3],
+                                    group=row.iloc[4],
+                                    last_class_percentage=row.iloc[9],
+                                    reference=row.iloc[8])
+        add_new_student(new_student)
+
     return {"success": True, "message": "File Uploaded Successfully"}
 
 # Campuses Related Routes

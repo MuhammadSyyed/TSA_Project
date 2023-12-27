@@ -5,7 +5,8 @@
 {% block quickbutton %}
 <button id="toggleFormbutton"
     style="margin: 0px 0px 10px 5px; background-color: rgb(249, 151, 151);color: rgb(255, 255, 255);"
-    onclick="togglestudentform()" class="quickbutton">+ Import Excel File</button>
+    onclick="togglestudentform()" class="quickbutton">+ Import Excel File
+</button>
 
 {% endblock %}
 {% block content %}
@@ -28,22 +29,6 @@
     </form>
 
     <form id="studentForm" onsubmit="addStudent(event,'{{session_id}}')" enctype="multipart/form-data">
-        <!-- <div class="form-group">
-            <div class="combination">
-                <div id="avatar">
-                </div>
-                <div id="previewImage" hidden>
-                    <p id="cross" onclick="resetImage()" class="remove-btn">&#10006;</p>
-                </div>
-            </div>
-        </div> -->
-        <!-- <div class="form-group">
-            <div class="combination">
-                <input style="border: none;" type="file" id="image" name="image" accept="image/*" required
-                    onchange="showUploadedImage(event)">
-            </div>
-        </div> -->
-
         <div class="form-group">
             <div class="combination">
                 <label for="student_name">Student Name:</label>
@@ -114,7 +99,7 @@
             </div>
             <div class="combination">
                 <label for="percentage">Percentage (Last Class):</label>
-                <input type="text" class="input-box" id="percentage" name="percentage" placeholder="Percentage"
+                <input type="number" class="input-box" id="percentage" name="percentage" placeholder="Percentage"
                     required>
             </div>
 
