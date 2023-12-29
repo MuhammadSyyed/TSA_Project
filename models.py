@@ -106,3 +106,17 @@ class SubjectCreate(BaseModel):
 
 class Subject(SubjectCreate):
     subject_id: int
+
+
+# Marks Related Models
+
+class MarksCreate(BaseModel):
+    student_id: int
+    subject_id: int
+    month: str
+    marks_total: float
+    marks_obtained: float
+
+
+class Marks(MarksCreate):
+    mark_id: int

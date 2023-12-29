@@ -5,7 +5,8 @@
 {% block quickbutton %}
 <button id="toggleFormbutton"
     style="margin: 0px 0px 10px 5px; background-color: rgb(249, 151, 151);color: rgb(255, 255, 255);"
-    onclick="togglestudentform()" class="quickbutton">+ Import Excel File
+    onclick="toggleForm('toggleFormbutton','studentForm','uploadStudentsheet')" class="quickbutton">+ Import via Excel
+    File
 </button>
 
 {% endblock %}
@@ -13,7 +14,8 @@
 
 <div class="form-container">
 
-    <form onsubmit="uploadStudentsFile('{{session_id}}')" id="uploadStudentsheet" enctype="multipart/form-data" hidden>
+    <form onsubmit="uploadStudentsFile(event,'{{session_id}}')" id="uploadStudentsheet" enctype="multipart/form-data"
+        hidden>
 
         <div class="form-group">
             <div class="combination">

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block main_title%}ADD MARKS
+{% endblock %}
+
+{% block quickbutton %}
+<button id="toggleFormbutton"
+    style="margin: 0px 0px 10px 5px; background-color: rgb(249, 151, 151);color: rgb(255, 255, 255);"
+    onclick="toggleForm('toggleFormbutton','MarksForm','uploadMarksheet')" class="quickbutton">+ Import Excel File
+</button>
+
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <form onsubmit="uploadMarksFile(event,'{{session_id}}')" id="uploadMarksheet" enctype="multipart/form-data" hidden>
+
+        <div class="form-group">
+            <div class="combination">
+                <label for="fileInput" class="file-label">Choose File</label>
+                <input style="border: none;" type="file" id="fileInput" name="xlsxfile" accept=".xls, .xlsx" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="combination">
+                <button type="submit">Upload Sheet</button>
+            </div>
+        </div>
+    </form>
+
+    <form onsubmit="addMarks(event,'{{session_id}}')" id="MarksForm" method="post">
+
+        <div class="form-group">
+            <div class="combination">
+                <label for="subject_id">Subject:</label>
+                <select class="input-box" id="subject_id" name="subject_id" required>
+                    {% for subject in subjects %}
+                    <option value="{{subject.subject_id}}">{{subject.subject_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="combination">
+                <label for="student_id">Student:</label>
+                <select class="input-box" id="student_id" name="student_id" required>
+                    {% for student in students %}
+                    <option value="{{student.student_id}}">{{student.roll_no}} - {{student.student_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+
+        </div>
+
+        <div class="form-group">
+            <div class="combination">
+                <label for="month">Month:</label>
+                <select class="input-box" id="month" name="month" required>
+                    {% for month_num,month_name in months.items() %}
+                    <option value="{{month_num}}">{{month_name}}</option>
+                    {% endfor %}
+                </select>
+
+            </div>
+            <div class="combination">
+                <label for="year">Academic Year:</label>
+                <select class="input-box" id="year" name="year" disabled>
+                    <option value="{{year}}" selected>{{year}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="combination">
+                <label for="marks_total">Marks Total:</label>
+                <input type="number" class="input-box" id="marks_total" name="marks_total"
+                    placeholder="Enter Total Marks" required>
+            </div>
+            <div class="combination">
+                <label for="marks_obtained">Marks Obtained:</label>
+                <input type="number" class="input-box" id="marks_obtained" name="marks_obtained"
+                    placeholder="Enter Obtained Marks" required>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <div class="combination">
+                <button type="submit">Add Marks</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+
+{% endblock %}

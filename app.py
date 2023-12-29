@@ -7,6 +7,7 @@ import random
 import json
 from datetime import datetime
 import pandas as pd
+from configs import months
 templates = Jinja2Templates(directory="templates")
 
 app = FastAPI()
@@ -129,7 +130,7 @@ def add_user(request: Request, verified=Depends(verify_through_session_id)):
 
     context = {"request": request, "session_id": int(
         request.cookies.get("session_id")), "user": verified}
-    return templates.TemplateResponse('add_user.html', context=context)
+    return templates.TemplateResponse('form_user.html', context=context)
 
 
 @app.get("/edit_user")
@@ -248,18 +249,50 @@ def examination_board(request: Request, verified=Depends(verify_through_session_
     return templates.TemplateResponse('examination_board.html', context=context)
 
 
-@app.get('/add_marks')
-def add_mark(request: Request, verified=Depends(verify_through_session_id)):
+@app.get('/form_marks')
+def form_marks(request: Request, verified=Depends(verify_through_session_id)):
     if not verified:
         context = {"request": request,
                    "message": "Unauthorized Access Denied!"}
         return templates.TemplateResponse('login.html', context=context)
-    context = {"request": request, "session_id": int(
-        request.cookies.get("session_id")), "user": verified}
-    return templates.TemplateResponse('add_marks.html', context=context)
 
+    students = get_all_students()
+    subjects = get_all_subjects()
+    context = {"request": request, "session_id": int(
+        request.cookies.get("session_id")), "user": verified, "students": students, "subjects": subjects, "months": months, "year": datetime.today().year}
+    return templates.TemplateResponse('form_marks.html', context=context)
+
+
+@app.post('/add_marks')
+def add_marks(request: Request, marks: MarksCreate, verified=Depends(verify_through_session_id)):
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+
+    return add_new_marks(marks)
+
+
+@app.post('/add_marks_via_sheet')
+def add_students_via_sheet(request: Request, xlsxfile: UploadFile = File(...), verified=Depends(verify_through_session_id)):
+    df = pd.read_excel(xlsxfile.file)
+
+    for _, row in df.iterrows():
+        subject_id = get_subject_id_by_name(row.iloc[0])
+        student_id = get_student_id_by_name(row.iloc[1])
+        new_student = MarksCreate(
+            subject_id=subject_id,
+            student_id=student_id,
+            month=str(row.iloc[2]),
+            marks_total=row.iloc[3],
+            marks_obtained=row.iloc[4]
+        )
+        add_new_marks(new_student)
+
+    return {"success": True, "message": "File Uploaded Successfully"}
 
 # Student Related Routes
+
 
 @app.get('/students')
 def students(request: Request, verified=Depends(verify_through_session_id)):
@@ -299,9 +332,9 @@ def add_student(request: Request, student: StudentCreate, verified=Depends(verif
 def add_students_via_sheet(request: Request, xlsxfile: UploadFile = File(...), verified=Depends(verify_through_session_id)):
     df = pd.read_excel(xlsxfile.file)
     for _, row in df.iterrows():
-
+        campus_id = get_campus_id_by_name(row.iloc[1])
         new_student = StudentCreate(student_name=row.iloc[0],
-                                    campus_id=row.iloc[1],
+                                    campus_id=campus_id,
                                     roll_no=row.iloc[5],
                                     batch=row.iloc[6],
                                     date_joined=row.iloc[7],

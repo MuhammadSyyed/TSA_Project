@@ -203,6 +203,31 @@ def delete_one_user(user: UserDelete):
     except sqlite3.Error as e:
         return {"success": False, "message": "An error occurred while deleting the user: " + str(e)}
 
+# Marks Related Functions
+
+
+def add_new_marks(marks: MarksCreate):
+    try:
+        conn = sqlite3.connect(configs.db_file)
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO MARKS (SUBJECT_ID,STUDENT_ID,MONTH,MARKS_TOTAL,MARKS_OBTAINED)"
+            "VALUES (?,?,?,?,?)",
+            (marks.subject_id,
+             marks.student_id,
+             marks.month,
+             marks.marks_total,
+             marks.marks_obtained
+             ))
+        conn.commit()
+        conn.close()
+        return {"success": True, "message": "Marks added successfully"}
+    except sqlite3.IntegrityError:
+        conn.commit()
+        conn.close()
+        return {"success": False, "message": "Marks already exists"}
+
+
 # Students Related Functions
 
 
@@ -292,6 +317,19 @@ def get_all_students():
 
         }) for student in all_students]
     return all_students
+
+
+def get_student_id_by_name(student_name:str):
+    conn = sqlite3.connect(configs.db_file)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute(
+        'SELECT STUDENT_ID FROM STUDENTS WHERE STUDENT_NAME = ?', (student_name,))
+    student = cursor.fetchone()
+    conn.close()
+
+    if student:
+        return student['student_id']
 
 # Campus Related Functions
 
@@ -403,6 +441,19 @@ def get_one_campus(campus_id: int):
         }
         return Campus(**campus_dtl)
 
+
+def get_campus_id_by_name(campus_name: str):
+    conn = sqlite3.connect(configs.db_file)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute(
+        'SELECT CAMPUS_ID FROM CAMPUS WHERE CAMPUS_NAME = ?', (campus_name,))
+    campus = cursor.fetchone()
+    conn.close()
+
+    if campus:
+        return campus['campus_id']
+
 # Subject Related Functions
 
 
@@ -475,6 +526,19 @@ def update_and_save_subject(subject: Subject):
     finally:
         conn.commit()
         conn.close()
+
+
+def get_subject_id_by_name(subject_name:str):
+    conn = sqlite3.connect(configs.db_file)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute(
+        'SELECT SUBJECT_ID FROM SUBJECTS WHERE SUBJECT_NAME = ?', (subject_name,))
+    subject = cursor.fetchone()
+    conn.close()
+
+    if subject:
+        return subject['subject_id']
 
 
 def main():

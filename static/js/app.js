@@ -1,17 +1,18 @@
 
 let sidebarOpen = false;
 const sidebar = document.getElementById('sidebar');
-function togglestudentform() {
 
-    if (document.getElementById('uploadStudentsheet').hidden) {
+function toggleForm(element_id, form_element_id, sheet_element_id) {
 
-        document.getElementById('studentForm').hidden = true;
-        document.getElementById('uploadStudentsheet').hidden = false;
-        document.getElementById('toggleFormbutton').innerText = "+ Add One Student";
+    if (document.getElementById(sheet_element_id).hidden) {
+
+        document.getElementById(form_element_id).hidden = true;
+        document.getElementById(sheet_element_id).hidden = false;
+        document.getElementById(element_id).innerText = "+ Add One";
     } else {
-        document.getElementById('studentForm').hidden = false;
-        document.getElementById('uploadStudentsheet').hidden = true;
-        document.getElementById('toggleFormbutton').innerText = "+ Import Excel File";
+        document.getElementById(form_element_id).hidden = false;
+        document.getElementById(sheet_element_id).hidden = true;
+        document.getElementById(element_id).innerText = "+ Import Excel File";
     }
 
 }
@@ -303,7 +304,7 @@ function deleteUser(user_id, session_id) {
 function gotoAddMarks(session_id) {
     console.log(session_id)
     document.cookie = `session_id=${session_id};`;
-    window.location.href = "/add_marks";
+    window.location.href = "/form_marks";
 }
 
 function gotoStudents(session_id) {
@@ -569,35 +570,131 @@ function addStudent(event, session_id) {
         });
 }
 
-function uploadStudentsFile(session_id) {
+function uploadStudentsFile(event, session_id) {
+    event.preventDefault();
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Upload it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var fileInput = document.getElementById('fileInput');
+            if (fileInput.files.length > 0) {
+                var formData = new FormData();
+                formData.append('xlsxfile', fileInput.files[0]);
+                fetch('/add_students_via_sheet', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Cookie': 'session_id' + `${session_id}`,
+                    },
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        timedPopup('success', data.message, 'students', session_id)
 
-    var fileInput = document.getElementById('fileInput');
-    if (fileInput.files.length > 0) {
-        var formData = new FormData();
-        formData.append('xlsxfile', fileInput.files[0]);
-        fetch('/add_students_via_sheet', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Cookie': 'session_id' + `${session_id}`,
-            },
-        })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);
+                    })
+                    .catch(error => {
+                        timedPopup('warning', error, 'form_student', session_id)
 
-            })
-            .catch(error => {
-                console.error('Error:', error);
+                    });
+            }
+            else {
+                timedPopup('warning', 'Please Choose Xlsx File', 'form_student', session_id)
+            }
 
-            });
+        }
+    });
 
 
-    }
-    else {
-        alert('Please select a file.');
-    }
+
 }
+
+function uploadMarksFile(event, session_id) {
+    event.preventDefault();
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Upload it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            var fileInput = document.getElementById('fileInput');
+            if (fileInput.files.length > 0) {
+                var formData = new FormData();
+                formData.append('xlsxfile', fileInput.files[0]);
+                fetch('/add_marks_via_sheet', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Cookie': 'session_id' + `${session_id}`,
+                    },
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        timedPopup('success', data.message, 'examination_board', session_id)
+                    })
+                    .catch(error => {
+                        timedPopup('warning', data.message, 'form_marks', session_id)
+
+                    });
+            }
+            else {
+                timedPopup('warning', 'Please Select An Excel File', 'form_marks', session_id)
+            }
+
+        }
+    });
+
+
+}
+
+function addMarks(event, session_id) {
+    event.preventDefault();
+
+    var formData = {
+        student_id: document.getElementById('student_id').value,
+        subject_id: document.getElementById('subject_id').value,
+        month: document.getElementById('year').value + document.getElementById('month').value,
+        marks_total: document.getElementById('marks_total').value,
+        marks_obtained: document.getElementById('marks_obtained').value
+    };
+
+    console.log(formData);
+
+
+    fetch('/add_marks', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Cookie': 'session_id' + `${session_id}`,
+        },
+        body: JSON.stringify(formData),
+
+    }).then(response => response.json())  // This returns a promise
+
+        .then(data => {
+            console.log(data);
+            if (data.success) {
+                timedPopup("success", data.message, 'examination_board', session_id);
+
+            } else {
+                timedPopup("warning", data.message, 'examination_board', session_id);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
 // ---------- CHARTS ----------
 
 // BAR CHART
