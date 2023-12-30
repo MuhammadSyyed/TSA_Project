@@ -26,7 +26,6 @@ def verify_through_session_id(request: Request):
         session_id = int(request.cookies.get("session_id"))
         if not valid_session(session_id):
             return None
-        print(f"Getting user for {session_id}")
         return get_user_by_session_id(session_id)
 
     except Exception as e:
@@ -174,7 +173,6 @@ def subjects(request: Request, verified=Depends(verify_through_session_id)):
         return templates.TemplateResponse('login.html', context=context)
 
     subjects = get_all_subjects()
-    print(subjects)
 
     context = {"request": request, "session_id": int(
         request.cookies.get("session_id")), "user": verified, "subjects": subjects}
@@ -382,7 +380,6 @@ def add_campus(request: Request, campus: CampusCreate, verified=Depends(verify_t
         context = {"request": request,
                    "message": "Unauthorized Access Denied!"}
         return templates.TemplateResponse('login.html', context=context)
-    print(campus)
     return add_new_campus(campus)
 
 

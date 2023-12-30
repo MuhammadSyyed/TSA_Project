@@ -2,15 +2,38 @@
 {% block main_title%}RESULTS
 {% endblock %}
 
-
 {% block charts %}
-<div class="charts-card">
-    <p class="chart-title">Top 5 Products</p>
+
+<div class="bar-card">
+    <p class="chart-title">Overall Result</p>
     <div id="bar-chart"></div>
 </div>
 
-<div class="charts-card">
-    <p class="chart-title">Purchase and Sales Orders</p>
-    <div id="area-chart"></div>
+<div class="pie-card">
+    <p class="chart-title">Grade Pie</p>
+    <div id="pie-chart"></div>
 </div>
+
+<div class="cloudcard">
+    <p class="chart-title">Best Performance</p>
+    <div style="height: 280px;width: 580px;padding: 20px;" id="chartdiv"></div>
+</div>
+
+<div class="radar-card">
+    <p class="chart-title">Radar</p>
+    <canvas id="canvas">
+    </canvas>
+</div>
+
+<div class="bar-card">
+    <p class="chart-title">Heatmap</p>
+    <div id="heatmap"></div>
+</div>
+
+<div class="bar-card">
+    <p class="chart-title">Stacked Bar Chart</p>
+    <div id="stackedbar"></div>
+</div>
+
+
 {% endblock %}

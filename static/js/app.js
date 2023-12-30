@@ -2,6 +2,7 @@
 let sidebarOpen = false;
 const sidebar = document.getElementById('sidebar');
 
+
 function toggleForm(element_id, form_element_id, sheet_element_id) {
 
     if (document.getElementById(sheet_element_id).hidden) {
@@ -84,31 +85,30 @@ function closeSidebar() {
 }
 
 function gotoUsers(session_id) {
-    console.log(session_id)
     document.cookie = `session_id=${session_id};`;
     window.location.href = "/users";
 }
 
 function gotoSubjects(session_id) {
-    console.log(session_id)
+
     document.cookie = `session_id=${session_id};`;
     window.location.href = "/subjects";
 }
 
 function gotoResults(session_id) {
-    console.log(session_id)
+
     document.cookie = `session_id=${session_id};`;
     window.location.href = "/results";
 }
 
 function gotoExaminationBoard(session_id) {
-    console.log(session_id)
+
     document.cookie = `session_id=${session_id};`;
     window.location.href = "/examination_board";
 }
 
 function editUser(user_id, session_id) {
-    console.log(user_id);
+
 
     fetch(`/edit_user?id=${user_id}`, {
         method: 'GET',
@@ -131,7 +131,7 @@ function updateUser(event, session_id, user_id) {
         password: document.getElementById('password').value,
         role: document.getElementById('role').value
     };
-    console.log(formData);
+
     Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -164,7 +164,7 @@ function updateUser(event, session_id, user_id) {
 }
 
 function gotoDashboard(session_id) {
-    console.log(session_id)
+
     document.cookie = `session_id=${session_id};`;
     window.location.href = "/dashboard";
 }
@@ -200,7 +200,7 @@ function signUp(event, session_id) {
         password: document.getElementById('password').value,
         role: document.getElementById('role').value
     };
-    console.log(formData)
+
 
     fetch('/signup', {
         method: 'POST',
@@ -212,7 +212,6 @@ function signUp(event, session_id) {
 
     }).then(response => response.json())  // This returns a promise
         .then(data => {
-            console.log(data);
             if (data.success) {
                 timedPopup("success", data.message, 'users', session_id);
 
@@ -233,7 +232,7 @@ function addSubject(event, session_id) {
         subject_name: document.getElementById('subject').value,
         total_lecture_units: document.getElementById('lecture_units').value
     };
-    console.log(formData)
+
 
     fetch('/add_subject', {
         method: 'POST',
@@ -245,7 +244,7 @@ function addSubject(event, session_id) {
 
     }).then(response => response.json())  // This returns a promise
         .then(data => {
-            console.log(data);
+
             if (data.success) {
                 timedPopup("success", data.message, 'subjects', session_id);
 
@@ -260,14 +259,14 @@ function addSubject(event, session_id) {
 }
 
 function getMe(session_id) {
-    alert(session_id);
+    Swal.fire(session_id);
 }
 
 function deleteUser(user_id, session_id) {
     var formData = {
         id: user_id
     };
-    console.log(formData)
+
 
     Swal.fire({
         title: "Are you sure?",
@@ -302,20 +301,20 @@ function deleteUser(user_id, session_id) {
 }
 
 function gotoAddMarks(session_id) {
-    console.log(session_id)
+
     document.cookie = `session_id=${session_id};`;
     window.location.href = "/form_marks";
 }
 
 function gotoStudents(session_id) {
-    console.log(session_id)
+
     document.cookie = `session_id=${session_id};`;
     window.location.href = "/students";
 
 }
 
 function gotoCampuses(session_id) {
-    console.log(session_id)
+
     document.cookie = `session_id=${session_id};`;
     window.location.href = "/campuses";
 
@@ -334,7 +333,7 @@ function addCampus(event, session_id) {
         head_eb: document.getElementById('head_eb').value,
         contact_number: document.getElementById('contact').value,
     };
-    console.log(formData)
+
 
     fetch('/add_campus', {
         method: 'POST',
@@ -346,7 +345,6 @@ function addCampus(event, session_id) {
 
     }).then(response => response.json())  // This returns a promise
         .then(data => {
-            console.log(data);
             if (data.success) {
                 timedPopup("success", data.message, 'campuses', session_id);
 
@@ -364,7 +362,7 @@ function deleteCampus(campus_id, session_id) {
     var formData = {
         campus_id: campus_id
     };
-    console.log(formData)
+
 
     Swal.fire({
         title: "Are you sure?",
@@ -426,7 +424,7 @@ function updateCampus(event, session_id, campus_id) {
         head_eb: document.getElementById('head_eb').value,
         contact_number: document.getElementById('contact').value,
     };
-    console.log(formData);
+
     Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -482,7 +480,7 @@ function updateSubject(event, session_id, subject_id) {
         subject_name: document.getElementById('subject').value,
         total_lecture_units: document.getElementById('lecture_units').value
     };
-    console.log(formData);
+
     Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -516,13 +514,13 @@ function updateSubject(event, session_id, subject_id) {
 }
 
 function gotoAdmissions(session_id) {
-    console.log(session_id)
+
     document.cookie = `session_id=${session_id};`;
     window.location.href = "/admissions";
 }
 
 function gotoAddStudent(session_id) {
-    console.log(session_id)
+
     document.cookie = `session_id=${session_id};`;
     window.location.href = "/form_student";
 }
@@ -543,7 +541,7 @@ function addStudent(event, session_id) {
         reference: document.getElementById('reference').value
     };
 
-    console.log(formData);
+
 
 
     fetch('/add_student', {
@@ -557,7 +555,7 @@ function addStudent(event, session_id) {
     }).then(response => response.json())  // This returns a promise
 
         .then(data => {
-            console.log(data);
+
             if (data.success) {
                 timedPopup("success", data.message, 'students', session_id);
 
@@ -668,7 +666,7 @@ function addMarks(event, session_id) {
         marks_obtained: document.getElementById('marks_obtained').value
     };
 
-    console.log(formData);
+
 
 
     fetch('/add_marks', {
@@ -682,7 +680,7 @@ function addMarks(event, session_id) {
     }).then(response => response.json())  // This returns a promise
 
         .then(data => {
-            console.log(data);
+
             if (data.success) {
                 timedPopup("success", data.message, 'examination_board', session_id);
 
@@ -697,43 +695,107 @@ function addMarks(event, session_id) {
 
 // ---------- CHARTS ----------
 
-// BAR CHART
+
+const studentMarks = [
+    { name: 'Alice', marks: 85 },
+    { name: 'Bob', marks: 78 },
+    { name: 'Charlie', marks: 92 },
+    { name: 'David', marks: 65 },
+    { name: 'Emma', marks: 89 },
+    { name: 'Frank', marks: 72 },
+    { name: 'Grace', marks: 94 },
+    { name: 'Henry', marks: 60 },
+    { name: 'Ivy', marks: 87 },
+    { name: 'Jack', marks: 76 },
+    { name: 'Karen', marks: 91 },
+    { name: 'Liam', marks: 82 },
+    { name: 'Mia', marks: 79 },
+    { name: 'Noah', marks: 88 },
+    { name: 'Olivia', marks: 70 },
+    { name: 'Parker', marks: 93 },
+    { name: 'Quinn', marks: 68 },
+    { name: 'Ryan', marks: 83 },
+    { name: 'Sophia', marks: 75 },
+    { name: 'Thomas', marks: 97 },
+    { name: 'Uma', marks: 69 },
+    { name: 'Vincent', marks: 80 },
+    { name: 'Willow', marks: 84 },
+    { name: 'Xavier', marks: 73 },
+    { name: 'Yara', marks: 96 },
+    { name: 'Zane', marks: 71 },
+    { name: 'Eva', marks: 74 },
+    { name: 'Logan', marks: 98 },
+    { name: 'Ava', marks: 81 },
+    { name: 'Owen', marks: 77 },
+];
+
+var students = studentMarks.map(student => student.name);
+
+const marks = studentMarks.map(student => student.marks);
+
+const grade_colors = studentMarks.map(student => {
+    const marks = student.marks;
+    if (marks >= 91) {
+        return '#4CAF50'; // Green for 91-100
+    } else if (marks >= 81) {
+        return '#2196F3'; // Blue for 81-90
+    } else if (marks >= 71) {
+        return '#FFC107'; // Amber for 71-80
+    } else if (marks >= 61) {
+        return '#FF5722'; // Deep Orange for 61-70
+    } else {
+        return '#F44336'; // Red for 51-60 and below
+    }
+});
+
 const barChartOptions = {
     series: [
         {
-            data: [10, 8, 6, 4, 2],
+            name: 'Percentage',
+            data: marks,
         },
     ],
     chart: {
         type: 'bar',
-        height: 350,
+        height: 420,
         toolbar: {
             show: true,
         },
     },
-    colors: ['#246dec', '#cc3c43', '#367952', '#f5b74f', '#4f35a1'],
+    colors: grade_colors,
     plotOptions: {
         bar: {
             distributed: true,
-            borderRadius: 4,
+            borderRadius: 5,
             horizontal: false,
-            columnWidth: '40%',
+            columnWidth: '60%',
+            dataLabels: {
+                position: 'top', // top, center, bottom
+            },
         },
     },
     dataLabels: {
-        enabled: false,
+        enabled: true,
+        formatter: function (value) {
+            return value + "%";
+        },
+        offsetY: -20,
+        style: {
+            fontSize: '12px',
+            colors: ["#304758"]
+        }
     },
     legend: {
         show: false,
     },
     xaxis: {
-        categories: ['Laptop', 'Phone', 'Monitor', 'Headphones', 'Camera'],
+        categories: students,
     },
     yaxis: {
         title: {
-            text: 'Count',
+            text: 'Marks(%)',
         },
-    },
+    }
 };
 
 const barChart = new ApexCharts(
@@ -742,57 +804,503 @@ const barChart = new ApexCharts(
 );
 barChart.render();
 
-// AREA CHART
-const areaChartOptions = {
-    series: [
+function categorizeMarks(marks) {
+    if (marks >= 90) return '90+';
+    if (marks >= 80) return '80-89';
+    if (marks >= 70) return '70-79';
+    if (marks >= 60) return '60-69';
+    return '50-59';
+}
+
+const marksCount = {
+    '90+': 0,
+    '80-89': 0,
+    '70-79': 0,
+    '60-69': 0,
+    '50-59': 0,
+};
+
+studentMarks.forEach((student) => {
+    const category = categorizeMarks(student.marks);
+    marksCount[category]++;
+});
+
+// Pie Chart
+
+const seriesData = Object.values(marksCount);
+var pie_options = {
+    series: seriesData,
+    chart: {
+        type: 'donut',
+    },
+    labels: Object.keys(marksCount),
+    responsive: [
         {
-            name: 'Purchase Orders',
-            data: [31, 40, 28, 51, 42, 109, 100],
-        },
-        {
-            name: 'Sales Orders',
-            data: [11, 32, 45, 32, 34, 52, 41],
+            breakpoint: 480,
+            options: {
+                chart: {
+                    width: 200,
+                },
+                legend: {
+                    position: 'bottom',
+                },
+            },
         },
     ],
-    chart: {
-        height: 350,
-        type: 'area',
-        toolbar: {
-            show: false,
-        },
+};
+var chart = new ApexCharts(document.querySelector("#pie-chart"), pie_options);
+chart.render();
+
+const words = [
+    { key: "word", value: 45 },
+    { key: "words", value: 81 },
+    { key: "sprite", value: 70 },
+    { key: "placed", value: 51 },
+    { key: "layout", value: 49 }
+];
+
+const radar = new Chart(document.getElementById("canvas").getContext("2d"), {
+    type: "radar",
+    data: {
+        labels: words.map((d) => d.key),
+        datasets: [
+            {
+                label: "",
+                data: words.map((d) => d.value)
+            }
+        ]
     },
-    colors: ['#4f35a1', '#246dec'],
-    dataLabels: {
-        enabled: false,
+    options: {
+        title: {
+            display: false,
+            text: "Chart.js Word Cloud"
+        },
+        plugins: {
+            legend: {
+                display: false
+            }
+        }
+    }
+});
+
+// -----------------------------------------------------------------------------
+am4core.useTheme(am4themes_moonrisekingdom);
+am4core.useTheme(am4themes_animated);
+
+var chart = am4core.create("chartdiv", am4plugins_wordCloud.WordCloud);
+chart.fontFamily = "Courier New";
+var series = chart.series.push(new am4plugins_wordCloud.WordCloudSeries());
+series.randomness = 0.2;
+series.rotationThreshold = 0;
+
+series.data = [{
+    "tag": "Physics I",
+    "count": "7"
+}, {
+    "tag": "Chemistry I",
+    "count": "5"
+}, {
+    "tag": "Urdu I",
+    "count": "6"
+}, {
+    "tag": "English I",
+    "count": "6"
+}, {
+    "tag": "Islamiat",
+    "count": "4"
+}, {
+    "tag": "Maths/Bio I",
+    "count": "7"
+}];
+
+series.dataFields.word = "tag";
+series.dataFields.value = "count";
+
+series.heatRules.push({
+    "target": series.labels.template,
+    "property": "fill",
+    "min": am4core.color("#0000CC"),
+    "max": am4core.color("#CC00CC"),
+    "dataField": "value"
+});
+
+series.labels.template.url = "http://localhost:8000/subjects";
+series.labels.template.urlTarget = "_blank";
+series.labels.template.tooltipText = "{word}: {value}";
+
+var hoverState = series.labels.template.states.create("hover");
+hoverState.properties.fill = am4core.color("orange");
+
+var subtitle = chart.titles.create();
+
+var title = chart.titles.create();
+// title.text = "Most Popular Tags @ StackOverflow";
+title.fontSize = 1700;
+title.fontWeight = "1000000";
+
+
+
+// ----------------------------------------------- Heatmap ------------------------
+// Example data for 5 subjects
+const subjectsData = [{
+    subject: 'Physics I',
+    marks:
+        [
+            { name: 'Alice', marks: 79 },
+            { name: 'Bob', marks: 92 },
+            { name: 'Charlie', marks: 68 },
+            { name: 'David', marks: 87 },
+            { name: 'Emma', marks: 74 },
+            { name: 'Frank', marks: 95 },
+            { name: 'Grace', marks: 81 },
+            { name: 'Henry', marks: 70 },
+            { name: 'Ivy', marks: 83 },
+            { name: 'Jack', marks: 89 },
+            { name: 'Karen', marks: 72 },
+            { name: 'Liam', marks: 66 },
+            { name: 'Mia', marks: 78 },
+            { name: 'Noah', marks: 91 },
+            { name: 'Olivia', marks: 84 },
+            { name: 'Parker', marks: 76 },
+            { name: 'Quinn', marks: 93 },
+            { name: 'Ryan', marks: 85 },
+            { name: 'Sophia', marks: 97 },
+            { name: 'Thomas', marks: 88 },
+            { name: 'Uma', marks: 73 },
+            { name: 'Vincent', marks: 67 },
+            { name: 'Willow', marks: 80 },
+            { name: 'Xavier', marks: 94 },
+            { name: 'Yara', marks: 82 },
+            { name: 'Zane', marks: 71 },
+            { name: 'Eva', marks: 76 },
+            { name: 'Logan', marks: 98 },
+            { name: 'Ava', marks: 75 },
+            { name: 'Owen', marks: 79 },
+        ]
+}, {
+    subject: 'Urdu I',
+    marks: [
+        { name: 'Alice', marks: 88 },
+        { name: 'Bob', marks: 72 },
+        { name: 'Charlie', marks: 95 },
+        { name: 'David', marks: 69 },
+        { name: 'Emma', marks: 84 },
+        { name: 'Frank', marks: 78 },
+        { name: 'Grace', marks: 90 },
+        { name: 'Henry', marks: 77 },
+        { name: 'Ivy', marks: 89 },
+        { name: 'Jack', marks: 83 },
+        { name: 'Karen', marks: 71 },
+        { name: 'Liam', marks: 92 },
+        { name: 'Mia', marks: 68 },
+        { name: 'Noah', marks: 86 },
+        { name: 'Olivia', marks: 79 },
+        { name: 'Parker', marks: 94 },
+        { name: 'Quinn', marks: 75 },
+        { name: 'Ryan', marks: 81 },
+        { name: 'Sophia', marks: 73 },
+        { name: 'Thomas', marks: 97 },
+        { name: 'Uma', marks: 82 },
+        { name: 'Vincent', marks: 74 },
+        { name: 'Willow', marks: 87 },
+        { name: 'Xavier', marks: 76 },
+        { name: 'Yara', marks: 70 },
+        { name: 'Zane', marks: 91 },
+        { name: 'Eva', marks: 85 },
+        { name: 'Logan', marks: 98 },
+        { name: 'Ava', marks: 80 },
+        { name: 'Owen', marks: 93 },
+    ]
+},
+{
+    subject: 'Chemistry I',
+    marks:
+        [
+            { name: 'Alice', marks: 79 },
+            { name: 'Bob', marks: 92 },
+            { name: 'Charlie', marks: 68 },
+            { name: 'David', marks: 87 },
+            { name: 'Emma', marks: 74 },
+            { name: 'Frank', marks: 95 },
+            { name: 'Grace', marks: 81 },
+            { name: 'Henry', marks: 70 },
+            { name: 'Ivy', marks: 83 },
+            { name: 'Jack', marks: 89 },
+            { name: 'Karen', marks: 72 },
+            { name: 'Liam', marks: 66 },
+            { name: 'Mia', marks: 78 },
+            { name: 'Noah', marks: 91 },
+            { name: 'Olivia', marks: 84 },
+            { name: 'Parker', marks: 76 },
+            { name: 'Quinn', marks: 93 },
+            { name: 'Ryan', marks: 85 },
+            { name: 'Sophia', marks: 97 },
+            { name: 'Thomas', marks: 88 },
+            { name: 'Uma', marks: 73 },
+            { name: 'Vincent', marks: 67 },
+            { name: 'Willow', marks: 80 },
+            { name: 'Xavier', marks: 94 },
+            { name: 'Yara', marks: 82 },
+            { name: 'Zane', marks: 71 },
+            { name: 'Eva', marks: 76 },
+            { name: 'Logan', marks: 98 },
+            { name: 'Ava', marks: 75 },
+            { name: 'Owen', marks: 79 },
+        ]
+}
+    , {
+    subject: 'Maths/Bio I',
+    marks:
+        [
+            { name: 'Alice', marks: 72 },
+            { name: 'Bob', marks: 96 },
+            { name: 'Charlie', marks: 79 },
+            { name: 'David', marks: 68 },
+            { name: 'Emma', marks: 85 },
+            { name: 'Frank', marks: 90 },
+            { name: 'Grace', marks: 73 },
+            { name: 'Henry', marks: 88 },
+            { name: 'Ivy', marks: 76 },
+            { name: 'Jack', marks: 82 },
+            { name: 'Karen', marks: 94 },
+            { name: 'Liam', marks: 71 },
+            { name: 'Mia', marks: 89 },
+            { name: 'Noah', marks: 83 },
+            { name: 'Olivia', marks: 65 },
+            { name: 'Parker', marks: 78 },
+            { name: 'Quinn', marks: 91 },
+            { name: 'Ryan', marks: 74 },
+            { name: 'Sophia', marks: 97 },
+            { name: 'Thomas', marks: 80 },
+            { name: 'Uma', marks: 69 },
+            { name: 'Vincent', marks: 84 },
+            { name: 'Willow', marks: 77 },
+            { name: 'Xavier', marks: 93 },
+            { name: 'Yara', marks: 70 },
+            { name: 'Zane', marks: 75 },
+            { name: 'Eva', marks: 86 },
+            { name: 'Logan', marks: 98 },
+            { name: 'Ava', marks: 81 },
+            { name: 'Owen', marks: 92 },
+        ]
+}
+    , {
+    subject: 'English I',
+    marks:
+        [
+            { name: 'Alice', marks: 84 },
+            { name: 'Bob', marks: 77 },
+            { name: 'Charlie', marks: 92 },
+            { name: 'David', marks: 65 },
+            { name: 'Emma', marks: 89 },
+            { name: 'Frank', marks: 72 },
+            { name: 'Grace', marks: 94 },
+            { name: 'Henry', marks: 60 },
+            { name: 'Ivy', marks: 87 },
+            { name: 'Jack', marks: 76 },
+            { name: 'Karen', marks: 91 },
+            { name: 'Liam', marks: 82 },
+            { name: 'Mia', marks: 79 },
+            { name: 'Noah', marks: 88 },
+            { name: 'Olivia', marks: 70 },
+            { name: 'Parker', marks: 93 },
+            { name: 'Quinn', marks: 68 },
+            { name: 'Ryan', marks: 83 },
+            { name: 'Sophia', marks: 75 },
+            { name: 'Thomas', marks: 97 },
+            { name: 'Uma', marks: 69 },
+            { name: 'Vincent', marks: 80 },
+            { name: 'Willow', marks: 84 },
+            { name: 'Xavier', marks: 73 },
+            { name: 'Yara', marks: 96 },
+            { name: 'Zane', marks: 71 },
+            { name: 'Eva', marks: 74 },
+            { name: 'Logan', marks: 98 },
+            { name: 'Ava', marks: 81 },
+            { name: 'Owen', marks: 77 },
+        ]
+}, {
+    subject: 'Islamiat',
+    marks:
+        [
+            { name: 'Alice', marks: 84 },
+            { name: 'Bob', marks: 77 },
+            { name: 'Charlie', marks: 92 },
+            { name: 'David', marks: 65 },
+            { name: 'Emma', marks: 89 },
+            { name: 'Frank', marks: 72 },
+            { name: 'Grace', marks: 94 },
+            { name: 'Henry', marks: 60 },
+            { name: 'Ivy', marks: 87 },
+            { name: 'Jack', marks: 76 },
+            { name: 'Karen', marks: 91 },
+            { name: 'Liam', marks: 82 },
+            { name: 'Mia', marks: 79 },
+            { name: 'Noah', marks: 88 },
+            { name: 'Olivia', marks: 70 },
+            { name: 'Parker', marks: 93 },
+            { name: 'Quinn', marks: 68 },
+            { name: 'Ryan', marks: 83 },
+            { name: 'Sophia', marks: 75 },
+            { name: 'Thomas', marks: 97 },
+            { name: 'Uma', marks: 69 },
+            { name: 'Vincent', marks: 80 },
+            { name: 'Willow', marks: 84 },
+            { name: 'Xavier', marks: 73 },
+            { name: 'Yara', marks: 96 },
+            { name: 'Zane', marks: 71 },
+            { name: 'Eva', marks: 74 },
+            { name: 'Logan', marks: 98 },
+            { name: 'Ava', marks: 81 },
+            { name: 'Owen', marks: 77 },
+        ]
+}
+];
+
+function generateData(numPoints, options, decimalPlaces = 0) {
+    const { min, max } = options;
+    const data = [];
+
+    for (let i = 0; i < numPoints; i++) {
+        const randomValue = Math.random() * (max - min) + min;
+        const roundedValue = Number(randomValue.toFixed(decimalPlaces));
+        data.push(roundedValue);
+    }
+
+    return data;
+}
+
+var heatmapOptions = {
+    series: subjectsData.map(subject => ({
+        name: subject.subject,
+        data: subject.marks.map(student => ({
+            x: student.name,
+            y: student.marks,
+        }))
+    }))
+    ,
+    chart: {
+        height: 400,
+        type: 'heatmap',
     },
     stroke: {
-        curve: 'smooth',
+        width: 1
     },
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-    markers: {
-        size: 0,
+    plotOptions: {
+        heatmap: {
+            radius: 25,
+            enableShades: false,
+            colorScale: {
+                ranges: [{
+                    from: 0,
+                    to: 50,
+                    color: 'red'
+                },
+                {
+                    from: 51,
+                    to: 60,
+                    color: 'blue'
+                },
+                {
+                    from: 61,
+                    to: 70,
+                    color: 'orange'
+                },
+                {
+                    from: 71,
+                    to: 80,
+                    color: 'purple'
+
+                }, {
+                    from: 81,
+                    to: 90,
+                    color: 'green'
+
+                }, {
+                    from: 91,
+                    to: 100,
+                    color: 'brown'
+
+                }
+                ],
+            },
+
+        }
     },
-    yaxis: [
-        {
-            title: {
-                text: 'Purchase Orders',
-            },
-        },
-        {
-            opposite: true,
-            title: {
-                text: 'Sales Orders',
-            },
-        },
-    ],
-    tooltip: {
-        shared: true,
-        intersect: false,
+    dataLabels: {
+        enabled: true,
+        style: {
+            colors: ['#fff']
+        }
+    },
+    xaxis: {
+        type: 'integer',
+    },
+    title: {
+        text: 'Rounded (Range without Shades)'
     },
 };
 
-const areaChart = new ApexCharts(
-    document.querySelector('#area-chart'),
-    areaChartOptions
-);
-areaChart.render();
+var heatmap = new ApexCharts(document.querySelector("#heatmap"), heatmapOptions);
+heatmap.render();
+
+// ------------------------------------------ Stacked Bar Chart ------------
+
+var options = {
+    series: subjectsData.map(subject => ({
+        name: subject.subject,
+        data: subject.marks.map(student => ({
+            x: student.name,
+            y: student.marks,
+        }))
+    })),
+    chart: {
+        type: 'bar',
+        height: 350,
+        stacked: true,
+        toolbar: {
+            show: true
+        },
+        zoom: {
+            enabled: true
+        }
+    },
+    responsive: [{
+        breakpoint: 480,
+        options: {
+            legend: {
+                position: 'bottom',
+                offsetX: -10,
+                offsetY: 0
+            }
+        }
+    }],
+    plotOptions: {
+        bar: {
+            horizontal: false,
+            borderRadius: 10,
+            dataLabels: {
+                total: {
+                    enabled: true,
+                    style: {
+                        fontSize: '13px',
+                        fontWeight: 900
+                    }
+                }
+            }
+        },
+    },
+    xaxis: {
+        type: 'text'
+    },
+    legend: {
+        position: 'right',
+        offsetY: 40
+    },
+    fill: {
+        opacity: 1
+    }
+};
+
+var stackedbar = new ApexCharts(document.querySelector("#stackedbar"), options);
+stackedbar.render();
