@@ -319,7 +319,7 @@ def get_all_students():
     return all_students
 
 
-def get_student_id_by_name(student_name:str):
+def get_student_id_by_name(student_name: str):
     conn = sqlite3.connect(configs.db_file)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
@@ -528,7 +528,7 @@ def update_and_save_subject(subject: Subject):
         conn.close()
 
 
-def get_subject_id_by_name(subject_name:str):
+def get_subject_id_by_name(subject_name: str):
     conn = sqlite3.connect(configs.db_file)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()

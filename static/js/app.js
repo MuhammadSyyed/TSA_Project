@@ -1188,7 +1188,7 @@ var heatmapOptions = {
     },
     plotOptions: {
         heatmap: {
-            radius: 25,
+            radius: 5,
             enableShades: false,
             colorScale: {
                 ranges: [{
@@ -1278,7 +1278,7 @@ var options = {
     plotOptions: {
         bar: {
             horizontal: false,
-            borderRadius: 10,
+            borderRadius: 5,
             dataLabels: {
                 total: {
                     enabled: true,
