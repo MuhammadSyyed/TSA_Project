@@ -164,6 +164,37 @@ def delete_user(request: Request, user: UserDelete, verified=Depends(verify_thro
 
 # Subject Related Routes
 
+@app.get('/subject_details')
+def subject_details(request: Request, subject_id: int, verified=Depends(verify_through_session_id)):
+    subject = get_one_subject(subject_id)
+    
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+    
+    context = {"request": request, "session_id": int(
+        request.cookies.get("session_id")), "user": verified, "subject_id": subject.subject_id, "subject_name": subject.subject_name}
+    
+    return templates.TemplateResponse('subject_details.html', context=context)
+
+
+@app.get('/monthly_subject_result')
+def monthly_subject_result(request: Request, subject_id: int, verified=Depends(verify_through_session_id)):
+    print("Aaleloa", '\n')
+    subject = get_one_subject(subject_id)
+    
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+    
+    context = {"request": request, "session_id": int(
+        request.cookies.get("session_id")), "user": verified, "subject_id": subject.subject_id, "subject_name": subject.subject_name}
+    
+    return templates.TemplateResponse('monthly_subject_result.html', context=context)
+
+
 
 @app.get('/subjects')
 def subjects(request: Request, verified=Depends(verify_through_session_id)):

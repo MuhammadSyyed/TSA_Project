@@ -225,6 +225,17 @@ function signUp(event, session_id) {
 
 }
 
+function gotoSubjectDetails(session_id, subject_id) {
+    document.cookie = `session_id=${session_id};`;
+    window.location.href = `/subject_details?subject_id=${subject_id}`;
+}
+
+function gotoMonthlySubjectResult(session_id, subject_id) {
+    document.cookie = `session_id=${session_id};`;
+    window.location.href = `/monthly_subject_result?subject_id=${subject_id}`;
+    console.log("Aalelola")
+}
+
 function addSubject(event, session_id) {
     event.preventDefault(); // Prevents the default form submission behavior
 
