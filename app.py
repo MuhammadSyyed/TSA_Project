@@ -179,23 +179,6 @@ def subject_details(request: Request, subject_id: int, verified=Depends(verify_t
     return templates.TemplateResponse('subject_details.html', context=context)
 
 
-@app.get('/monthly_subject_result')
-def monthly_subject_result(request: Request, subject_id: int, verified=Depends(verify_through_session_id)):
-    print("Aaleloa", '\n')
-    subject = get_one_subject(subject_id)
-    
-    if not verified:
-        context = {"request": request,
-                   "message": "Unauthorized Access Denied!"}
-        return templates.TemplateResponse('login.html', context=context)
-    
-    context = {"request": request, "session_id": int(
-        request.cookies.get("session_id")), "user": verified, "subject_id": subject.subject_id, "subject_name": subject.subject_name}
-    
-    return templates.TemplateResponse('monthly_subject_result.html', context=context)
-
-
-
 @app.get('/subjects')
 def subjects(request: Request, verified=Depends(verify_through_session_id)):
     if not verified:
@@ -319,6 +302,26 @@ def add_students_via_sheet(request: Request, xlsxfile: UploadFile = File(...), v
         add_new_marks(new_student)
 
     return {"success": True, "message": "File Uploaded Successfully"}
+
+
+@app.get('/monthly_subject_result')
+def monthly_subject_result(request: Request, subject_id: int, verified=Depends(verify_through_session_id)):
+    subject = get_one_subject(subject_id)
+    months = get_all_subject_months(1)
+    print(months)
+    
+    if not verified:
+        context = {"request": request,
+                   "message": "Unauthorized Access Denied!"}
+        return templates.TemplateResponse('login.html', context=context)
+    
+    # months = [1,2,3,4]
+    
+    context = {"request": request, "session_id": int(
+        request.cookies.get("session_id")), "user": verified, "subject_id": subject.subject_id, "subject_name": subject.subject_name, "months": months}
+    
+    return templates.TemplateResponse('monthly_subject_result.html', context=context)
+
 
 # Student Related Routes
 

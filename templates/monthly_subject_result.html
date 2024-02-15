@@ -7,6 +7,11 @@ Monthly Result for {{subject_name}}
 {% block quickbutton %} 
 <div>
     Select Month
+    <select name="" id="">
+        {% for month in months %}
+            <option value="">{{month}}</option>
+        {% endfor %}
+    </select>
 </div>
 {% endblock %}
 

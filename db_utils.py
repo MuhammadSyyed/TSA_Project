@@ -490,6 +490,21 @@ def add_new_subject(subject: SubjectCreate):
         return {"success": False, "message": "Subject already exists"}
 
 
+def get_all_subject_months(subject_id:int):
+    print("get_all_subject_months")
+    conn = sqlite3.connect(configs.db_file)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute(
+        f"Select DISTINCT MONTH from Marks where SUBJECT_ID = {subject_id} ")
+    months = cursor.fetchall()
+    conn.close()
+
+    if months:
+        all_months = [month["MONTH"] for month in months]
+    return all_months
+
+
 def get_one_subject(subject_id: int):
     conn = sqlite3.connect(configs.db_file)
     conn.row_factory = sqlite3.Row
