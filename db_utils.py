@@ -227,6 +227,18 @@ def add_new_marks(marks: MarksCreate):
         conn.close()
         return {"success": False, "message": "Marks already exists"}
 
+def get_all_subject_months(subject_id:int):
+    conn = sqlite3.connect(configs.db_file)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute(f"SELECT DISTINCT MONTH FROM MARKS WHERE SUBJECT_ID = ? ",(subject_id,))
+    all_months = cursor.fetchall()
+    conn.close()
+    if all_months:
+        print(all_months[0]['MONTH'])
+
+    
+    # print(all_months)
 
 # Students Related Functions
 
@@ -556,9 +568,10 @@ def main():
 
 if __name__ == "__main__":
     pass
-    main()
+    # main()
     # print(get_user(UserLogin(username="imranabbas", password="@dminsyed")))
     # print(update_user(UserUpdate(username="ibrahim",password="@syed",role="coo",id=3)))
     # print(delete_user(UserDelete(id=2)))
     # print(get_all_users())
     # print(get_student(Student()))
+    get_all_subject_months(1)
