@@ -574,4 +574,4 @@ if __name__ == "__main__":
     # print(delete_user(UserDelete(id=2)))
     # print(get_all_users())
     # print(get_student(Student()))
-    get_all_subject_months(1)
+    # get_all_subject_months(1)
