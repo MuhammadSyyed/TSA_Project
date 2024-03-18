@@ -1,13 +1,13 @@
-users_schema = '''
+users_schema = """
         CREATE TABLE IF NOT EXISTS USERS (
         ID INTEGER PRIMARY KEY AUTOINCREMENT,
         USERNAME TEXT UNIQUE NOT NULL,
         PASSWORD TEXT NOT NULL,
         ROLE TEXT NOT NULL
         )
-    '''
+    """
 
-student_schema = '''
+student_schema = """
         CREATE TABLE IF NOT EXISTS STUDENTS (
         STUDENT_ID INTEGER PRIMARY KEY AUTOINCREMENT,
         CAMPUS_ID INTEGER NOT NULL,
@@ -21,16 +21,16 @@ student_schema = '''
         LAST_CLASS_PERCENTAGE REAL,
         REFERENCE TEXT
         )
-    '''
+    """
 
-subject_schema = '''
+subject_schema = """
         CREATE TABLE IF NOT EXISTS SUBJECTS (
         SUBJECT_ID INTEGER PRIMARY KEY AUTOINCREMENT,
         SUBJECT_NAME  TEXT UNIQUE NOT NULL,
         TOTAL_LECTURE_UNITS INTEGER NOT NULL)
-'''
+"""
 
-subject_status_schema = '''
+subject_status_schema = """
         CREATE TABLE IF NOT EXISTS SUBJECT_STATUS (
         STATUS_ID INTEGER PRIMARY KEY AUTOINCREMENT,
         SUBJECT_ID INTEGER NOT NULL,
@@ -38,18 +38,18 @@ subject_status_schema = '''
         YEAR INTEGER NOT NULL,
         LECTURE_UNIT_ID TEXT NOT NULL,
         DATE DATE NOT NULL)
-'''
+"""
 
-lecture_unit_schema = '''
+lecture_unit_schema = """
         CREATE TABLE IF NOT EXISTS LECTURE_UNITS (
         LECTURE_UNIT_ID INTEGER PRIMARY KEY AUTOINCREMENT,
         SUBJECT_ID INTEGER NOT NULL,
         LECTURE_UNIT_NAME TEXT NOT NULL,
         MONTH TEXT NOT NULL,
         OTHER_URL TEXT)
-'''
+"""
 
-marks_schema = '''
+marks_schema = """
         CREATE TABLE IF NOT EXISTS MARKS (
         MARK_ID INTEGER PRIMARY KEY AUTOINCREMENT,
         STUDENT_ID INTEGER NOT NULL,
@@ -57,9 +57,9 @@ marks_schema = '''
         MONTH TEXT NOT NULL,
         MARKS_TOTAL INTEGER NOT NULL,
         MARKS_OBTAINED REAL NOT NULL)
-'''
+"""
 
-teachers_schema = '''
+teachers_schema = """
         CREATE TABLE IF NOT EXISTS TEACHERS (
         TEACHER_ID INTEGER PRIMARY KEY AUTOINCREMENT,
         CAMPUS_ID INTEGER NOT NULL,
@@ -68,9 +68,9 @@ teachers_schema = '''
         DESIGNATION TEXT NOT NULL,
         CONTACT_NUMBER TEXT NOT NULL,
         QUALIFICATION TEXT NOT NULL)
-'''
+"""
 
-campus_schema = '''
+campus_schema = """
         CREATE TABLE IF NOT EXISTS CAMPUS (
         CAMPUS_ID INTEGER PRIMARY KEY AUTOINCREMENT,
         CAMPUS_NAME TEXT NOT NULL,
@@ -80,13 +80,13 @@ campus_schema = '''
         COO TEXT NOT NULL,
         HEAD_EB TEXT NOT NULL,
         CONTACT_NUMBER TEXT NOT NULL)
-'''
+"""
 
-sessions_schema = '''
+sessions_schema = """
         CREATE TABLE IF NOT EXISTS SESSIONS (
         SESSION_ID INTEGER PRIMARY KEY,
         USER_ID INTEGER NOT NULL,
         USERNAME TEXT NOT NULL,
         CREATED_AT REAL NOT NULL,
         VALID_BEFORE REAL NOT NULL)
-'''
+"""

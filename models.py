@@ -15,6 +15,7 @@ class SessionCreate(BaseModel):
 class Session(SessionCreate):
     session_id: int
 
+
 # User Related Model
 
 
@@ -57,6 +58,7 @@ class UserLogin(BaseModel):
     username: str
     password: str
 
+
 # Campus Related Models
 
 
@@ -77,6 +79,7 @@ class Campus(CampusCreate):
 class CampusDelete(BaseModel):
     campus_id: int
 
+
 # Student Related Models
 
 
@@ -96,6 +99,7 @@ class StudentCreate(BaseModel):
 class Student(StudentCreate):
     student_id: int
 
+
 # Subject Related Models
 
 
@@ -109,6 +113,7 @@ class Subject(SubjectCreate):
 
 
 # Marks Related Models
+
 
 class MarksCreate(BaseModel):
     student_id: int
